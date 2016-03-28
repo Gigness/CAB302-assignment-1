@@ -47,7 +47,13 @@ public class Candidate {
 	 * @throws ElectionException if <code>isNullOrEmpty(candName,candParty,candAbbrev) OR voteCount <0</code>
 	 */
 	public Candidate(String candName, String candParty, String candAbbrev, int voteCount) throws ElectionException {
-		
+		if(candName == null || candParty == null || candAbbrev == null || voteCount < 0) {
+			throw new ElectionException("Invalid Candidate parameters");
+		}
+		this.name = candName;
+		this.party = candParty;
+		this.abbrev = candAbbrev;
+		this.voteCount = voteCount;
 	}
 
 	/**
@@ -57,84 +63,84 @@ public class Candidate {
 	 * 
 	 * @return <code>String</code> with formatted candidate display 
 	 */
-	public String candidateListing() {
-		String nameStr = this.name;
-		String partyStr = this.party;
-		String abbrevStr = "(" + this.abbrev + ")" + "\n";
-
-        int len = ElectionManager.NameField - nameStr.length();
-		String str = nameStr + Strings.createPadding(' ',len);
-		len = ElectionManager.FullPartyField - partyStr.length();
-		str += partyStr + Strings.createPadding(' ',len);
-		str += abbrevStr;
-		return str;
-	}
-
+//	public String candidateListing() {
+//		String nameStr = this.name;
+//		String partyStr = this.party;
+//		String abbrevStr = "(" + this.abbrev + ")" + "\n";
+//
+//        int len = ElectionManager.NameField - nameStr.length();
+//		String str = nameStr + Strings.createPadding(' ',len);
+//		len = ElectionManager.FullPartyField - partyStr.length();
+//		str += partyStr + Strings.createPadding(' ',len);
+//		str += abbrevStr;
+//		return str;
+//	}
+//
 	/**
 	 * Simple method to create a deep copy of the candidate
-	 * 
+	 *
 	 * @return a deep copy of this <code>Candidate</code>
-	 * @throws ElectionException - see {@link #Candidate(String,String,String,int)}. 
+	 * @throws ElectionException - see {@link #Candidate(String,String,String,int)}.
 	 */
 	public Candidate copy() throws ElectionException {
-		
+		return new Candidate(this.name, this.party, this.abbrev, this.voteCount);
 	}
 
 	/**
 	 * Simple Getter to return the name field
-	 * 
-	 * @return <code>String</code> containing <code>name</code> 
+	 *
+	 * @return <code>String</code> containing <code>name</code>
 	 */
 	public String getName() {
-		
+		return this.name;
 	}
 
 	/**
 	 * Simple Getter to return the full party name field
-	 * 
-	 * @return <code>String</code> containing <code>party</code> 
+	 *
+	 * @return <code>String</code> containing <code>party</code>
 	 */
 	public String getParty() {
-		
+		return this.party;
 	}
 
 	/**
 	 * Simple Getter to return the vote count for the candidate
-	 * 
-	 * @return <code>int</code> containing <code>voteCount</code> 
+	 *
+	 * @return <code>int</code> containing <code>voteCount</code>
 	 */
 	public int getVoteCount() {
-		
+		return this.voteCount;
 	}
 
 	/**
 	 * String version of the vote count Getter
-	 * 
-	 * @return <code>String</code> containing text version of <code>voteCount</code> 
+	 *
+	 * @return <code>String</code> containing text version of <code>voteCount</code>
 	 */
 	public String getVoteCountString() {
-		
+		return String.valueOf(this.voteCount);
 	}
 
 	/**
 	 * Simple method to increment the vote count for the candidate
 	 */
 	public void incrementVoteCount() {
-		
+		this.voteCount++;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		String str = this.name + " (" + this.abbrev + ")";
-		String voteStr = ("" + this.voteCount).trim();
-		int length = ElectionManager.DisplayFieldWidth - str.length()
-				- voteStr.length();
-		str += Strings.createPadding(' ', length) + voteStr + "\n";
-		return str;
-	}
+//
+//	/*
+//	 * (non-Javadoc)
+//	 *
+//	 * @see java.lang.Object#toString()
+//	 */
+//	@Override
+//	public String toString() {
+//		String str = this.name + " (" + this.abbrev + ")";
+//		String voteStr = ("" + this.voteCount).trim();
+//		int length = ElectionManager.DisplayFieldWidth - str.length()
+//				- voteStr.length();
+//		str += Strings.createPadding(' ', length) + voteStr + "\n";
+//		return str;
+//	}
 }

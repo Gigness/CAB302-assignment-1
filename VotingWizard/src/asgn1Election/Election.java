@@ -1,8 +1,8 @@
 /**
- * 
- * This file is part of the VotingWizard Project, written as 
- * part of the assessment for CAB302, Semester 1, 2016. 
- * 
+ *
+ * This file is part of the VotingWizard Project, written as
+ * part of the assessment for CAB302, Semester 1, 2016.
+ *
  */
 package asgn1Election;
 
@@ -17,19 +17,19 @@ import asgn1Util.NumbersException;
 import asgn1Util.Strings;
 
 /**
- * 
+ *
  * <p>Abstract class to specify the workings of a seat based election. <code>Election</code>
  * lies at the root of a hierarchy of concrete elections, here <code>SimpleElection</code>
  * and <code>PrefElection</code>, each of which must implement specific versions of the abstract
- * methods {@link #findWinner()}{@link #isFormal(Vote)} and {@link #clearWinner(int)}. Note that 
+ * methods {@link #findWinner()}{@link #isFormal(Vote)} and {@link #clearWinner(int)}. Note that
  * <code>clearWinner</code> is used only in the context of <code>findWinner</code>, but is nevertheless
  * crucial and specific to the given system</p>
- * 
- * <p>Some private methods here are used to parse particular parameters from the definition 
+ *
+ * <p>Some private methods here are used to parse particular parameters from the definition
  * and vote files. These are provided for you as is.</p>
- * 
+ *
  * @author hogan
- * 
+ *
  */
 public abstract class Election {
 	/** Election Types */
@@ -41,7 +41,7 @@ public abstract class Election {
 	public static final String VotExt = ".vot";
 
 	/**
-	 * Simple boolean method to check whether we have a supported election type. 
+	 * Simple boolean method to check whether we have a supported election type.
 	 *
 	 * @param num <code>int</code> type to be tested
 	 * @return <code>boolean status, true if valid; false otherwise
@@ -82,7 +82,7 @@ public abstract class Election {
 
 	/**
 	 * Simple Constructor for the <code>Election</code> superclass.
-	 * 
+	 *
 	 * @param name <code>String</code> name of election
 	 */
 	public Election(String name) {
@@ -90,17 +90,17 @@ public abstract class Election {
 	}
 
 	/**
-	 * Perform a count of the votes for the current election according to the rules in 
+	 * Perform a count of the votes for the current election according to the rules in
 	 * operation for that election type and construct a string containing a
-	 * display summary of the count. 
-	 * 
+	 * display summary of the count.
+	 *
 	 * @return String containing summary of the count
 	 */
 	public abstract String findWinner();
 
 	/**
 	 * Simple Getter to return a reference to the candidate collection
-	 *  
+	 *
 	 * @return <code>Collection</code> containing cds
 	 */
 	public java.util.Collection<Candidate> getCandidates() {
@@ -109,7 +109,7 @@ public abstract class Election {
 
 	/**
      * Simple Getter for the name of the election
-	 *  
+	 *
 	 * @return <code>String</code> containing name
 	 */
 	public String getName() {
@@ -118,7 +118,7 @@ public abstract class Election {
 
 	/**
 	 * Simple Getter to return number of candidates for the Election
-	 *  
+	 *
 	 * @return <code>int</code> containing number of candidates in this election
 	 */
 	public int getNumCandidates() {
@@ -128,7 +128,7 @@ public abstract class Election {
 	/**
      * Simple Getter for the election type
      * Values: SimpleVoting = 0; or PrefVoting = 1;
-	 *  
+	 *
 	 * @return <code>int</code> containing current election type
 	 */
 	public int getType() {
@@ -138,7 +138,7 @@ public abstract class Election {
 	/**
 	 * String version of simple Getter for the election type
      * Values: SimpleVoting = 0; or PrefVoting = 1;
-	 *  
+	 *
 	 * @return <code>String</code> containing current election type
 	 */
 	public String getTypeString() {
@@ -153,9 +153,9 @@ public abstract class Election {
 	}
 
 	/**
-	 * Simple boolean to determine whether vote is formal according to the 
-	 * rules in operation for this election type. 
-	 *  
+	 * Simple boolean to determine whether vote is formal according to the
+	 * rules in operation for this election type.
+	 *
 	 * @param v <code>Vote</code> whose formality is to be determined
 	 * @return <code>isFormal(v)</code>: true if vote is formal; otherwise false.
 	 */
@@ -164,11 +164,11 @@ public abstract class Election {
 	/**
 	 * Loads electoral definitions from the file specified by the Election name.
 	 * This includes name, enrolment, numCandidates and the candidates themselves
-	 * 
-	 * @throws ElectionException if invalid lines in election files 
-	 * @throws FileNotFoundException if election file not found 
+	 *
+	 * @throws ElectionException if invalid lines in election files
+	 * @throws FileNotFoundException if election file not found
 	 * @throws IOException from BufferedReader
-	 * @throws NumbersException if parsing of integers fails 
+	 * @throws NumbersException if parsing of integers fails
 	 */
 	@SuppressWarnings("resource")
 	public void loadDefs() throws ElectionException, FileNotFoundException,
@@ -211,11 +211,11 @@ public abstract class Election {
 
 	/**
      * Loads votes from the file specified by the Election name.
-	 * Formality is checked according to the election type. Formal votes are recorded 
-	 * in the election vote collection. Informal votes are discarded but counted. 
-	 * 
-	 * @throws ElectionException if invalid lines in vote file 
-	 * @throws FileNotFoundException if vote file not found 
+	 * Formality is checked according to the election type. Formal votes are recorded
+	 * in the election vote collection. Informal votes are discarded but counted.
+	 *
+	 * @throws ElectionException if invalid lines in vote file
+	 * @throws FileNotFoundException if vote file not found
 	 * @throws IOException from BufferedReader
 	 * @throws NumbersException if parsing of integers fails
 	 */
@@ -252,10 +252,10 @@ public abstract class Election {
 	// Protected and Private/helper methods below///
 
 	/*
-	 * Helper method to produce a display list of candidates based on 
+	 * Helper method to produce a display list of candidates based on
 	 * the <code>Candidate.candidateListing</code> method.
-	 * 
-	 * @return <code>String</code> containing candidate list 
+	 *
+	 * @return <code>String</code> containing candidate list
 	 */
 	protected String candidateListing() {
 		String str = "";
@@ -268,10 +268,10 @@ public abstract class Election {
 	}
 
     /**
-	 * Helper method to produce a display list of candidates for vote 
+	 * Helper method to produce a display list of candidates for vote
 	 * reporting. This is based on the <code>Candidate.toString</code> method.
-	 * 
-	 * @return <code>String</code> containing candidate list 
+	 *
+	 * @return <code>String</code> containing candidate list
 	 */
 	protected String candidateVoteSummary() {
 		String str = "";
@@ -285,17 +285,17 @@ public abstract class Election {
 
 	/**
 	 * Important method to determine if a clear winner exists among the currently active
-	 * candidates according to the rules of the current election type. Method is used only 
+	 * candidates according to the rules of the current election type. Method is used only
 	 * in the public method {@link #findWinner()} in each subclass of <code>Election</code>
-	 * 
+	 *
 	 * @param win <code>int</code> votes required by a winning candidate
 	 * @return Winning <code>Candidate</code> if one exists; otherwise null
 	 */
 	protected abstract Candidate clearWinner(int win);
 
 	/**
-	 * Helper method to provide display string about the winning candidate 
-	 * 
+	 * Helper method to provide display string about the winning candidate
+	 *
 	 * @param wc Winning <code>Candidate</code>
 	 * @return <code>String</code> containing display string for winning candidate
 	 */
@@ -308,25 +308,25 @@ public abstract class Election {
 		str += " is the winner with " + wc.getVoteCount() + " votes...\n";
 		return str;
 	}
-	
+
 	/**
-	 * Helper method to provide display header string for election 
-	 * 
+	 * Helper method to provide display header string for election
+	 *
 	 * @param wc Winning <code>Candidate</code>
-	 * @return <code>String</code> containing seat-specific display string 
+	 * @return <code>String</code> containing seat-specific display string
 	 */
 	protected String showResultHeader() {
 		String str = "Results for election: " + this.name + "\n"
-				+ "Enrolment: " + this.enrolment + "\n\n" 
+				+ "Enrolment: " + this.enrolment + "\n\n"
 				+ candidateListing() + "\n\n";
 		return str;
 	}
 
 	/**
-	 * Helper method to parse candidate information from a line in the definitions file 
-	 * 
-	 * @param line <code>String</code> containing the current line from the file 
-	 * @return <code>Candidate</code> containing the information parsed 
+	 * Helper method to parse candidate information from a line in the definitions file
+	 *
+	 * @param line <code>String</code> containing the current line from the file
+	 * @return <code>Candidate</code> containing the information parsed
 	 * @throws <code>ElectionException</code> if <code>isNull(line) OR isInvalid(line) OR isIncomplete(line)</code>
 	 */
 	private Candidate parseCandidateFromLine(String line) throws ElectionException {
@@ -354,14 +354,14 @@ public abstract class Election {
 	}
 
     /**
-	 * <p>Helper method to parse <code>int</code> value from a line according 
+	 * <p>Helper method to parse <code>int</code> value from a line according
 	 * to a specific format in the file.</p>
-	 * 
+	 *
 	 * <p>Line has the format: <code>label: <int-value></code></p>
-	 * 
-	 * @param line <code>String</code> containing the current line from the file 
+	 *
+	 * @param line <code>String</code> containing the current line from the file
 	 * @param label <code>String</code> containing the label
-	 * @return <code>int</code> containing the value parsed 
+	 * @return <code>int</code> containing the value parsed
      * @throws NumbersException if parsing error
 	 * @throws <code>ElectionException</code> if <code>isNull(line) OR isInvalid(line) OR isIncomplete(line)</code>
 	 */
@@ -369,25 +369,25 @@ public abstract class Election {
 		if (line == null) {
 			throw new ElectionException("Null Parameter Line at: " + label);
 		} else {
-			//Parse line if we can 
+			//Parse line if we can
 			String[] tokens = line.trim().split(":");
-			
+
 			if ((tokens.length != 2) || (tokens[0].trim().compareTo(label) !=0)) {
 				throw new ElectionException("Invalid Parameter Line at: " + label);
-			} 
+			}
 			return Numbers.parseIntFromToken(tokens[1],"Invalid Value at label: " + label);
 		}
 	}
-	
+
 	/**
-	 * <p>Helper method to parse <code>String</code> value from a line according 
+	 * <p>Helper method to parse <code>String</code> value from a line according
 	 * to a specific format in the file.</p>
-	 * 
+	 *
 	 * <p>Line has the format: <code>label: <string-value></code></p>
-	 * 
-	 * @param line <code>String</code> containing the current line from the file 
+	 *
+	 * @param line <code>String</code> containing the current line from the file
 	 * @param label <code>String</code> containing the label
-	 * @return <code>String</code> containing the value parsed 
+	 * @return <code>String</code> containing the value parsed
 	 * @throws <code>ElectionException</code> if <code>isNull(line) OR isInvalid(line) OR isIncomplete(line)</code>
 	 */
 	private String parseStringFromLine(String line, String label)
@@ -413,19 +413,19 @@ public abstract class Election {
 		}
 	}
 
-	
+
 	/**
-	 * <p>Helper method to parse full <code>Vote</code>from a line in the votes 
-	 * file. The line should include <code>numCandidates<p> integers separated by 
-	 * whitespace. 
-	 * 
-	 * @param line <code>String</code> containing the current line from the file 
+	 * <p>Helper method to parse full <code>Vote</code>from a line in the votes
+	 * file. The line should include <code>numCandidates<p> integers separated by
+	 * whitespace.
+	 *
+	 * @param line <code>String</code> containing the current line from the file
 	 * @param numCandidates <code>int</code> specifying the number of integers
-	 * @return <code>Vote</code> containing the value parsed 
+	 * @return <code>Vote</code> containing the value parsed
 	 * @throws <code>ElectionException</code> if <code>isNull(line) OR isInvalid(line) OR isIncomplete(line)</code>
-	 * @throws <code>NumbersException</code> if there is a numeric parsing error 
+	 * @throws <code>NumbersException</code> if there is a numeric parsing error
 	 */
-	private Vote parseVoteFromLine(String line, int numCandidates) 
+	private Vote parseVoteFromLine(String line, int numCandidates)
 			            throws ElectionException, NumbersException {
 		Vote vote = null;
 		if (line == null) {
