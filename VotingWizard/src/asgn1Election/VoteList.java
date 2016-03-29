@@ -26,6 +26,9 @@ public class VoteList implements Vote {
 	/** Number of candidates in the election */
 	private int numCandidates;
 
+	/**	Current candidate */
+	private int currentCandidate = 0;
+
 	/**
 	 * <p>Simple Constructor for the <code>VoteList</code> class. <code>numCandidates</code> 
 	 * is known to be in range through check on <code>VoteCollection</code>. 
@@ -34,7 +37,8 @@ public class VoteList implements Vote {
 	 * this seat. 
 	 */
 	public VoteList(int numCandidates) {
-		
+		this.numCandidates = numCandidates;
+		vote = new ArrayList<>();
 	}
 
 	/*
@@ -44,7 +48,13 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public boolean addPref(int index) {
-		
+		if(currentCandidate < numCandidates) {
+			vote.add(index);
+			currentCandidate++;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/*
@@ -54,7 +64,11 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Vote copyVote() {
-		
+		Vote copyVote = new VoteList(numCandidates);
+		for(int pref: vote) {
+			copyVote.addPref(pref);
+		}
+		return copyVote;
 	}
 
 	/*
@@ -64,7 +78,14 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public CandidateIndex getPreference(int cand) {
-
+		int preferredCand = (vote.indexOf(cand) + 1); // Because of 0 index and candidateIndexes must be > 0
+//		if(preferredCand > 0) {
+//
+//		} else {
+//			return null;
+//		}
+		CandidateIndex candIndex = new CandidateIndex(preferredCand);
+		return candIndex;
 	}
 
 	/*
@@ -74,7 +95,13 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Vote invertVote() {
+		Vote invertedVote = new VoteList(numCandidates);
 
+		for(int i = 1; i <= numCandidates; i++) {
+			int candidate = vote.indexOf(i) + 1; // Because zero indexed arrays, and candidate Indexes are 1 based
+			invertedVote.addPref(candidate);
+		}
+		return invertedVote;
 	}
 
 	/* 
@@ -84,7 +111,7 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Iterator<Integer> iterator() {
-		
+		return vote.iterator();
 	}
 
 	/*

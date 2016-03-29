@@ -49,7 +49,10 @@ public class VoteCollection implements Collection {
 	 * @throws ElectionException if <code>NOT inRange(numCandidates)</code>
 	 */
 	public VoteCollection(int numCandidates) throws ElectionException {
-		
+		if(!CandidateIndex.inRange(numCandidates)) {
+			throw new ElectionException("Invalid input for number of candidates.");
+		}
+		this.numCandidates = numCandidates;
 	}
 	
 	/* 
