@@ -63,7 +63,8 @@ public class VoteCollection implements Collection {
 	@Override
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds,
 			CandidateIndex elim) {
-	
+
+
 	}
 
 	/*
@@ -83,7 +84,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void emptyTheCollection() {
-		
+		voteList.clear();
 	}
 
 	/*
@@ -93,7 +94,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public int getFormalCount() {
-	
+		return this.formalCount;
 	}
 
 	/*
@@ -103,7 +104,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public int getInformalCount() {
-		
+		return this.informalCount;
 	}
 
 	
@@ -114,7 +115,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void includeFormalVote(Vote v) {
-	
+		voteList.add(v);
 	}
 
 	/*
@@ -124,7 +125,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void updateInformalCount() {
-		
+		informalCount++;
 	}
 	
 	/**
@@ -147,7 +148,7 @@ public class VoteCollection implements Collection {
 	 * 
 	 */
 	private CandidateIndex getPrefthKey(Vote v,TreeMap<CandidateIndex, Candidate> cds, int pref) {
-
+		return null;
 	}
 
 	/**
@@ -159,6 +160,6 @@ public class VoteCollection implements Collection {
 	 * @return <code>CandidateIndex</code> of the first preference candidate
 	 */
 	private CandidateIndex getPrimaryKey(Vote v) {
-        
+        return null;
     }
 }

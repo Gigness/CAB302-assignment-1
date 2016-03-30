@@ -7,6 +7,7 @@
 package asgn1Election;
 
 import java.util.Collection;
+import java.util.Map;
 
 import asgn1Util.Strings;
 
@@ -26,7 +27,8 @@ public class SimpleElection extends Election {
 	 * @param name <code>String</code> containing the Election name
 	 */
 	public SimpleElection(String name) {
-
+		super(name);
+		this.type = SimpleVoting;
 	}
 
 	/*
@@ -36,7 +38,9 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public String findWinner() {
-		
+//
+		System.out.println(this.cds);
+		return "";
 	}
 
 	/* 
@@ -45,7 +49,7 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
-		
+		return true;
 	}
 
 	/*
@@ -68,7 +72,7 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	protected Candidate clearWinner(int wVotes) {
-		
+		return null;
 	}
 
 	/**

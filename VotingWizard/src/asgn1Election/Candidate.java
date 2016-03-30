@@ -63,19 +63,19 @@ public class Candidate {
 	 * 
 	 * @return <code>String</code> with formatted candidate display 
 	 */
-//	public String candidateListing() {
-//		String nameStr = this.name;
-//		String partyStr = this.party;
-//		String abbrevStr = "(" + this.abbrev + ")" + "\n";
-//
-//        int len = ElectionManager.NameField - nameStr.length();
-//		String str = nameStr + Strings.createPadding(' ',len);
-//		len = ElectionManager.FullPartyField - partyStr.length();
-//		str += partyStr + Strings.createPadding(' ',len);
-//		str += abbrevStr;
-//		return str;
-//	}
-//
+	public String candidateListing() {
+		String nameStr = this.name;
+		String partyStr = this.party;
+		String abbrevStr = "(" + this.abbrev + ")" + "\n";
+
+        int len = ElectionManager.NameField - nameStr.length();
+		String str = nameStr + Strings.createPadding(' ',len);
+		len = ElectionManager.FullPartyField - partyStr.length();
+		str += partyStr + Strings.createPadding(' ',len);
+		str += abbrevStr;
+		return str;
+	}
+
 	/**
 	 * Simple method to create a deep copy of the candidate
 	 *
@@ -128,19 +128,19 @@ public class Candidate {
 	public void incrementVoteCount() {
 		this.voteCount++;
 	}
-//
-//	/*
-//	 * (non-Javadoc)
-//	 *
-//	 * @see java.lang.Object#toString()
-//	 */
-//	@Override
-//	public String toString() {
-//		String str = this.name + " (" + this.abbrev + ")";
-//		String voteStr = ("" + this.voteCount).trim();
-//		int length = ElectionManager.DisplayFieldWidth - str.length()
-//				- voteStr.length();
-//		str += Strings.createPadding(' ', length) + voteStr + "\n";
-//		return str;
-//	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		String str = this.name + " (" + this.abbrev + ")";
+		String voteStr = ("" + this.voteCount).trim();
+		int length = ElectionManager.DisplayFieldWidth - str.length()
+				- voteStr.length();
+		str += Strings.createPadding(' ', length) + voteStr + "\n";
+		return str;
+	}
 }

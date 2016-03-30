@@ -64,6 +64,22 @@ public class VoteListTests {
     }
 
     @Test
+    public void preferredCandidateMixedVoteTest() {
+        b.addPref(8);
+        b.addPref(1);
+        b.addPref(3);
+        b.addPref(5);
+        b.addPref(6);
+        b.addPref(4);
+        b.addPref(2);
+        b.addPref(7);
+
+        CandidateIndex firstPref = b.getPreference(1);
+        assertEquals(firstPref.toString(), "2");
+
+    }
+
+    @Test
     public void preferredCandidateUnavailableTest() {
         CandidateIndex badPref = a.getPreference(candidateNum + 1);
         CandidateIndex badPref1 = a.getPreference(100);
