@@ -30,6 +30,7 @@ public class SimpleElectionTests {
     public void setUp() throws Exception {
         elecA = new SimpleElection("Test");
         elecA.loadDefs();
+        elecA.loadVotes();
     }
 
     @Test(expected = IOException.class)
@@ -39,6 +40,7 @@ public class SimpleElectionTests {
     }
 
     @Test
+    @Ignore
     public void inspectElec() {
         elecA.findWinner();
     }

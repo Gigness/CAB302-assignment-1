@@ -7,6 +7,7 @@
 package asgn1Election;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -53,6 +54,7 @@ public class VoteCollection implements Collection {
 			throw new ElectionException("Invalid input for number of candidates.");
 		}
 		this.numCandidates = numCandidates;
+		this.voteList = new ArrayList<>();
 	}
 	
 	/* 
@@ -61,8 +63,22 @@ public class VoteCollection implements Collection {
 	 * @see asgn1Election.Collection#countPrefVotes(java.util.TreeMap, asgn1Election.CandidateIndex)
 	 */
 	@Override
-	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds,
-			CandidateIndex elim) {
+	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds, CandidateIndex elim) {
+		// get current results of primary votes
+		ArrayList<Double> voteResults = new ArrayList<>();
+		ArrayList<CandidateIndex> elimCands = new ArrayList<>();
+
+		for(CandidateIndex candIndex: cds.keySet()) {
+			Candidate cand = cds.get(candIndex);
+			int votes = cand.getVoteCount();
+			double percentage = (double) votes / formalCount * 100;
+			voteResults.add(percentage);
+		}
+
+		System.out.println(voteResults);
+
+		// get the candidate with lowest votes
+
 
 
 	}
@@ -74,7 +90,23 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void countPrimaryVotes(TreeMap<CandidateIndex, Candidate> cds) {
-		
+		for(Vote vote: voteList) {
+//			Vote invertedVote = vote.invertVote();
+			// get first preference, which is first index of invertedVote
+//			CandidateIndex firstPref = vote.getPreference(1);
+			CandidateIndex firstPref = getPrimaryKey(vote);
+			System.out.println(firstPref);
+			Candidate prefCand = cds.get(firstPref);
+			prefCand.incrementVoteCount();
+
+
+		}
+		// View Inverted Votes
+		//			System.out.println("inverted votelist");
+
+//		for(Vote vote: voteList) {
+//			System.out.println(vote.invertVote());
+//		}
 	}
 
 	/*
@@ -116,6 +148,8 @@ public class VoteCollection implements Collection {
 	@Override
 	public void includeFormalVote(Vote v) {
 		voteList.add(v);
+		formalCount++;
+//		System.out.println(voteList);
 	}
 
 	/*
@@ -160,6 +194,6 @@ public class VoteCollection implements Collection {
 	 * @return <code>CandidateIndex</code> of the first preference candidate
 	 */
 	private CandidateIndex getPrimaryKey(Vote v) {
-        return null;
+		return v.getPreference(1);
     }
 }

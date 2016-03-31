@@ -1,5 +1,6 @@
 package asgn1Tests;
 
+import asgn1Election.Candidate;
 import asgn1Election.CandidateIndex;
 import asgn1Election.Vote;
 import asgn1Election.VoteList;

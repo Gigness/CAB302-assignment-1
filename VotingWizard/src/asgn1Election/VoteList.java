@@ -77,8 +77,8 @@ public class VoteList implements Vote {
 	 * @see asgn1Election.Vote#getPreference(int)
 	 */
 	@Override
-	public CandidateIndex getPreference(int cand) {
-		int preferredCand = (vote.indexOf(cand) + 1); // Because of 0 index and candidateIndexes must be > 0
+	public CandidateIndex getPreference(int pref) {
+		int preferredCand = (vote.indexOf(pref) + 1); // Because of 0 index and candidateIndexes must be > 0
 //		if(preferredCand > 0) {
 //
 //		} else {
