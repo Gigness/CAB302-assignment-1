@@ -76,11 +76,6 @@ public class VoteCollection implements Collection {
 		}
 
 		System.out.println(voteResults);
-
-		// get the candidate with lowest votes
-
-
-
 	}
 
 	/*
@@ -92,21 +87,33 @@ public class VoteCollection implements Collection {
 	public void countPrimaryVotes(TreeMap<CandidateIndex, Candidate> cds) {
 		for(Vote vote: voteList) {
 //			Vote invertedVote = vote.invertVote();
+
 			// get first preference, which is first index of invertedVote
 //			CandidateIndex firstPref = vote.getPreference(1);
 			CandidateIndex firstPref = getPrimaryKey(vote);
-			System.out.println(firstPref);
+
+
 			Candidate prefCand = cds.get(firstPref);
 			prefCand.incrementVoteCount();
-
-
 		}
-		// View Inverted Votes
-		//			System.out.println("inverted votelist");
-
+//		 View Inverted Votes
+//					System.out.println("inverted votelist");
+//
 //		for(Vote vote: voteList) {
 //			System.out.println(vote.invertVote());
 //		}
+
+//		Debugging
+		System.out.println("formalCount: " + formalCount);
+		System.out.println("informalCount: " + informalCount);
+		System.out.println("voteList: ");
+		for(Vote vote: voteList) {
+			System.out.println(vote);
+		}
+		System.out.println("voteList inverted:" );
+		for(Vote vote: voteList) {
+			System.out.println(vote.invertVote());
+		}
 	}
 
 	/*
@@ -161,7 +168,8 @@ public class VoteCollection implements Collection {
 	public void updateInformalCount() {
 		informalCount++;
 	}
-	
+
+
 	/**
 	 * 
 	 * <p>Important helper method to find the candidate in the current vote 
@@ -196,4 +204,6 @@ public class VoteCollection implements Collection {
 	private CandidateIndex getPrimaryKey(Vote v) {
 		return v.getPreference(1);
     }
+
+
 }

@@ -38,9 +38,12 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public String findWinner() {
-//
 		System.out.println(this.cds);
 		return "";
+	}
+
+	public void testSimpleElection() {
+		vc.countPrimaryVotes(cds);
 	}
 
 	/* 

@@ -28,7 +28,7 @@ public class SimpleElectionTests {
 
     @Before
     public void setUp() throws Exception {
-        elecA = new SimpleElection("Test");
+        elecA = new SimpleElection("MinMorgulVale");
         elecA.loadDefs();
         elecA.loadVotes();
     }
@@ -40,9 +40,8 @@ public class SimpleElectionTests {
     }
 
     @Test
-    @Ignore
-    public void inspectElec() {
-        elecA.findWinner();
+    public void testElec() {
+        elecA.testSimpleElection();
     }
 
     @Test

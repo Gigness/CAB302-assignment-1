@@ -7,6 +7,8 @@
 package asgn1Election;
 
 import java.util.BitSet;
+import java.util.HashSet;
+import java.util.Map;
 
 import asgn1Util.Strings;
 
@@ -28,6 +30,15 @@ public class PrefElection extends Election {
 	 */
 	public PrefElection(String name) {
 		super(name);
+		this.type = PrefVoting;
+	}
+
+	public void testMethodOnly() {
+		vc.countPrimaryVotes(cds);
+
+		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
+			System.out.println(entry);
+		}
 	}
 
 	/*
@@ -47,6 +58,24 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
+		HashSet<Integer> voteSet = new HashSet<>();
+		for(int pref: v) {
+			voteSet.add(pref);
+		}
+
+//		System.out.println(voteSet);
+
+		if(voteSet.size() != numCandidates) {
+//			System.out.println("num votes in vote set invalid");
+			return false;
+		}
+
+		for(int i = 1; i <= numCandidates; i++) {
+			if(!voteSet.contains(i)) {
+//				System.out.println("does not contain candidate: " + i);
+				return false;
+			}
+		}
 		return true;
 	}
 
