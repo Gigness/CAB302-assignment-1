@@ -41,6 +41,9 @@ public class VoteCollection implements Collection {
 	/** Number of invalid votes received during the election */
 	private int informalCount;
 
+	/** Votes associated with Candidates */
+	private TreeMap<CandidateIndex, ArrayList<Vote>> distributedVotes;
+
 	/**
 	 * Simple Constructor for the <code>VoteCollection</code> class.
 	 * Most information added through mutator methods. 
@@ -76,6 +79,8 @@ public class VoteCollection implements Collection {
 		}
 
 		System.out.println(voteResults);
+
+		System.out.println(cds.size());
 	}
 
 	/*
@@ -95,6 +100,8 @@ public class VoteCollection implements Collection {
 
 			Candidate prefCand = cds.get(firstPref);
 			prefCand.incrementVoteCount();
+
+
 		}
 //		 View Inverted Votes
 //					System.out.println("inverted votelist");
