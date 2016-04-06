@@ -48,6 +48,14 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	public String findWinner() {
+		// number of votes (double)
+		double numWinVotesDouble = vc.getFormalCount() * 0.5;
+
+		// number of votes required to win the pref. election
+		int numWinVotes = (int) Math.ceil(numWinVotesDouble);
+
+		Candidate winner = clearWinner(numWinVotes);
+
 		return "";
 	}
 
@@ -100,7 +108,53 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	protected Candidate clearWinner(int winVotes) {
+//		System.out.println("Initialisation: Votes have not been counted yet \n");
+//		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
+//			System.out.println(entry);
+//		}
+//		 perform initial vote count
+		vc.countPrimaryVotes(cds);
+
+//		System.out.println("Primary votes have been counted. \n");
+//		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
+//			System.out.println(entry);
+//		}
+		CandidateIndex elim = new CandidateIndex(0);
+		int elimIndex = 0;
+		int lowestVotes = -1;
+
+		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
+
+			CandidateIndex currCandIndex = entry.getKey();
+			Candidate currCand = entry.getValue();
+
+			int currVotes = currCand.getVoteCount();
+			if(lowestVotes == -1 || currVotes < lowestVotes) {
+				lowestVotes = currVotes;
+				elimIndex = Integer.parseInt(currCandIndex.toString());
+			}
+		}
+
+
+
+		elim.setValue(elimIndex);
+
+//		System.out.println("eliminated candidate is" + elimIndex);
+//
+//		cds.remove(elim);
+//		System.out.println("after eliminated candidate has been removed");
+//		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
+//			System.out.println(entry);
+//		}
+
+		System.out.println("\n");
+		vc.printVoteCollection();
+
+		System.out.println("\n");
+		vc.printVoteCollectionInvert();
+
 		return null;
+
 	}
 
 	/**

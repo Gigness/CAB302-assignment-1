@@ -63,6 +63,9 @@ public class CandidateIndexTests {
     @Test public void copyTest() {
         CandidateIndex indexCopy = index1.copy();
         assertEquals(index1.compareTo(indexCopy), 0);
+        index1.setValue(10);
+        assertEquals(indexCopy.toString(), "1");
+        assertEquals(index1.toString(), "10");
     }
     /* End */
 

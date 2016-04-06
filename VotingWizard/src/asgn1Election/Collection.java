@@ -88,4 +88,9 @@ public interface Collection {
 	 * in the vote Collection. 
 	 */
 	public void updateInformalCount();
+
+	//TODO
+	public void printVoteCollection();
+
+	public void printVoteCollectionInvert();
 }

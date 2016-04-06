@@ -25,6 +25,12 @@ public class PrefElectionTests {
         elecA.loadVotes();
     }
 
+    /** findWinner */
+    @Test
+    public void findWinnerTest() {
+        elecA.findWinner();
+    }
+
     /** isFormal tests */
     @Test
     public void isFormalTest() throws Exception {
@@ -54,9 +60,5 @@ public class PrefElectionTests {
     }
 
     /** Test */
-    @Test
-    @Ignore
-    public void inspectVotes() {
-        elecA.testMethodOnly();
-    }
+
 }

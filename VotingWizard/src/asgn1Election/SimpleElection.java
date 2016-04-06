@@ -6,6 +6,7 @@
  */
 package asgn1Election;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -38,8 +39,11 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public String findWinner() {
-		System.out.println(this.cds);
-		return "";
+
+		clearWinner(0);
+
+		String results =  "Simple Election Results:";
+		return results;
 	}
 
 	public void testSimpleElection() {
@@ -52,7 +56,22 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
-		return true;
+		int numOnes = 0;
+		for(int pref: v) {
+			if(pref == 1) {
+				numOnes++;
+			}
+			else if(pref > numCandidates) {
+//				System.out.println(pref + " not in range");
+				return false;
+			}
+		}
+		if(numOnes != 1) {
+//			System.out.println("num Ones: " + numOnes);
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	/*
@@ -75,6 +94,22 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	protected Candidate clearWinner(int wVotes) {
+		// wVotes is useless for a SimpleElection, a candidate simply needs a majority
+
+		// count the primary votes in the collection
+		vc.countPrimaryVotes(cds);
+
+		ArrayList<CandidateIndex> mostVotes_candidate;
+
+		int highestVotes = 0;
+
+		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
+			Candidate currentCandidate = entry.getValue();
+			int votes = entry.getValue().getVoteCount();
+			if(votes > highestVotes) {
+				highestVotes = votes;
+			}
+		}
 		return null;
 	}
 

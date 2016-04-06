@@ -67,20 +67,40 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds, CandidateIndex elim) {
-		// get current results of primary votes
-		ArrayList<Double> voteResults = new ArrayList<>();
-		ArrayList<CandidateIndex> elimCands = new ArrayList<>();
 
-		for(CandidateIndex candIndex: cds.keySet()) {
-			Candidate cand = cds.get(candIndex);
-			int votes = cand.getVoteCount();
-			double percentage = (double) votes / formalCount * 100;
-			voteResults.add(percentage);
+		int numVotesDistributed = 0;
+		for(Vote vote: voteList) {
+
+			boolean invalidVote = false;
+			for(int candidate: vote) {
+
+				CandidateIndex ci = new CandidateIndex(candidate);
+				if(cds.containsKey(ci) && ci != elim) {
+					if(invalidVote) {
+						cds.get(ci).incrementVoteCount();
+						numVotesDistributed++;
+					}
+					break;
+				} else if(ci == elim) {
+					invalidVote = true;
+				}
+				// if candidate exists in treeMap and is not the eliminated candidate
+					// if its an invalid vote -
+						// redistribute it to this candidate
+						// break we donzo
+					// else
+					// we good, don't have to do anything
+					// the vote is still current
+					// break;
+
+				// else if candidate  is an elim candidate
+					// this vote is invalid and must be redistributed
+					// set invalidVote to true
+
+			}
+
 		}
 
-		System.out.println(voteResults);
-
-		System.out.println(cds.size());
 	}
 
 	/*
@@ -96,12 +116,8 @@ public class VoteCollection implements Collection {
 			// get first preference, which is first index of invertedVote
 //			CandidateIndex firstPref = vote.getPreference(1);
 			CandidateIndex firstPref = getPrimaryKey(vote);
-
-
 			Candidate prefCand = cds.get(firstPref);
 			prefCand.incrementVoteCount();
-
-
 		}
 //		 View Inverted Votes
 //					System.out.println("inverted votelist");
@@ -111,16 +127,16 @@ public class VoteCollection implements Collection {
 //		}
 
 //		Debugging
-		System.out.println("formalCount: " + formalCount);
-		System.out.println("informalCount: " + informalCount);
-		System.out.println("voteList: ");
-		for(Vote vote: voteList) {
-			System.out.println(vote);
-		}
-		System.out.println("voteList inverted:" );
-		for(Vote vote: voteList) {
-			System.out.println(vote.invertVote());
-		}
+//		System.out.println("formalCount: " + formalCount);
+//		System.out.println("informalCount: " + informalCount);
+//		System.out.println("voteList: ");
+//		for(Vote vote: voteList) {
+//			System.out.println(vote);
+//		}
+//		System.out.println("voteList inverted:" );
+//		for(Vote vote: voteList) {
+//			System.out.println(vote.invertVote());
+//		}
 	}
 
 	/*
@@ -163,7 +179,6 @@ public class VoteCollection implements Collection {
 	public void includeFormalVote(Vote v) {
 		voteList.add(v);
 		formalCount++;
-//		System.out.println(voteList);
 	}
 
 	/*
@@ -176,7 +191,18 @@ public class VoteCollection implements Collection {
 		informalCount++;
 	}
 
+	//todo Remove
+	public void printVoteCollection() {
+		for(Vote vote: voteList) {
+			System.out.println(vote);
+		}
+	}
 
+	public void printVoteCollectionInvert() {
+		for(Vote vote: voteList) {
+			System.out.println(vote.invertVote());
+		}
+	}
 	/**
 	 * 
 	 * <p>Important helper method to find the candidate in the current vote 
