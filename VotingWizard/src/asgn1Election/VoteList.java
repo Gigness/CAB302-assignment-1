@@ -6,9 +6,7 @@
  */
 package asgn1Election;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 
@@ -41,6 +39,8 @@ public class VoteList implements Vote {
 		vote = new ArrayList<>();
 	}
 
+
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -48,7 +48,7 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public boolean addPref(int index) {
-		if(currentCandidate < numCandidates) {
+		if((currentCandidate < numCandidates) && (CandidateIndex.inRange(index))) {
 			vote.add(index);
 			currentCandidate++;
 			return true;
@@ -78,12 +78,8 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public CandidateIndex getPreference(int pref) {
-		int preferredCand = (vote.indexOf(pref) + 1); // Because of 0 index and candidateIndexes must be > 0
-//		if(preferredCand > 0) {
-//
-//		} else {
-//			return null;
-//		}
+		// Because of 0 index and candidateIndexes must be > 0
+		int preferredCand = (vote.indexOf(pref) + 1);
 		CandidateIndex candIndex = new CandidateIndex(preferredCand);
 		return candIndex;
 	}

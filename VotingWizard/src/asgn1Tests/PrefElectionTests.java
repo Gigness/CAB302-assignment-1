@@ -16,6 +16,7 @@ public class PrefElectionTests {
 
     private PrefElection elecA;
     private PrefElection elecB;
+    private PrefElection elecC;
     private int numCandidates = 3;
 
     @Before
@@ -23,13 +24,16 @@ public class PrefElectionTests {
         elecA = new PrefElection("MinMorgulVale");
         elecA.loadDefs();
         elecA.loadVotes();
+        elecC = new PrefElection("MinMorgulValeTie");
+        elecC.loadDefs();
+        elecC.loadVotes();
     }
 
     /** findWinner */
-    @Test
-    public void findWinnerTest() {
-        elecA.findWinner();
-    }
+//    @Test
+//    public void findWinnerTest() {
+//        elecA.findWinner();
+//    }
 
     /** isFormal tests */
     @Test
@@ -60,5 +64,8 @@ public class PrefElectionTests {
     }
 
     /** Test */
-
+    @Test
+    public void test() {
+        elecC.findWinner();
+    }
 }

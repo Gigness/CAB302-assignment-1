@@ -48,6 +48,10 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	public String findWinner() {
+		System.out.println(" TEST ");
+		vc.printVoteCollectionInvert();
+		System.out.println(" END ");
+		System.out.print(showResultHeader());
 		// number of votes (double)
 		double numWinVotesDouble = vc.getFormalCount() * 0.5;
 
@@ -56,7 +60,7 @@ public class PrefElection extends Election {
 
 		Candidate winner = clearWinner(numWinVotes);
 
-		return "";
+		return reportWinner(winner);
 	}
 
 	/*
@@ -108,53 +112,44 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	protected Candidate clearWinner(int winVotes) {
-//		System.out.println("Initialisation: Votes have not been counted yet \n");
-//		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
-//			System.out.println(entry);
-//		}
-//		 perform initial vote count
+		boolean noTie = true;
 		vc.countPrimaryVotes(cds);
+		System.out.println(reportPrimaryVote());
+		System.out.print(reportCountStatus());
+		while(cds.size() > 2 && noTie) {
+			CandidateIndex elim = selectLowestCandidate();
+			System.out.println(prefDistMessage(cds.get(elim)));
+			cds.remove(elim);
+			vc.countPrefVotes(cds, elim);
+			System.out.print(reportCountStatus());
+		}
 
-//		System.out.println("Primary votes have been counted. \n");
-//		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
-//			System.out.println(entry);
-//		}
-		CandidateIndex elim = new CandidateIndex(0);
-		int elimIndex = 0;
-		int lowestVotes = -1;
+		// get the winner
+		CandidateIndex winnerIndex = null;
+		Map.Entry<CandidateIndex, Candidate> finalCand1 = cds.firstEntry();
+		Map.Entry<CandidateIndex, Candidate> finalCand2 = cds.lastEntry();
 
-		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
-
-			CandidateIndex currCandIndex = entry.getKey();
-			Candidate currCand = entry.getValue();
-
-			int currVotes = currCand.getVoteCount();
-			if(lowestVotes == -1 || currVotes < lowestVotes) {
-				lowestVotes = currVotes;
-				elimIndex = Integer.parseInt(currCandIndex.toString());
-			}
+		if(finalCand1.getValue().getVoteCount() > winVotes) {
+			winnerIndex = finalCand1.getKey();
+		}
+		else if(finalCand2.getValue().getVoteCount() > winVotes) {
+			winnerIndex = finalCand2.getKey();
+		}
+		else if(finalCand1.getValue().getVoteCount() == finalCand2.getValue().getVoteCount()) {
+			CandidateIndex elim = finalCand1.getKey().copy();
+			System.out.println(prefDistMessage(cds.get(elim)));
+			cds.remove(elim);
+			vc.countPrefVotes(cds, elim);
+			System.out.print(reportCountStatus());
+			winnerIndex = finalCand2.getKey().copy();
 		}
 
 
+		if(winnerIndex == null) {
+			System.out.println("No Winner found, weird...");
+		}
 
-		elim.setValue(elimIndex);
-
-//		System.out.println("eliminated candidate is" + elimIndex);
-//
-//		cds.remove(elim);
-//		System.out.println("after eliminated candidate has been removed");
-//		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
-//			System.out.println(entry);
-//		}
-
-		System.out.println("\n");
-		vc.printVoteCollection();
-
-		System.out.println("\n");
-		vc.printVoteCollectionInvert();
-
-		return null;
-
+		return cds.get(winnerIndex);
 	}
 
 	/**
@@ -197,6 +192,33 @@ public class PrefElection extends Election {
 	 * @return <code>CandidateIndex</code> of candidate with fewest votes
 	 */
 	private CandidateIndex selectLowestCandidate() {
-		return null;
+		CandidateIndex elim = new CandidateIndex(0);
+		int elimIndex = 0;
+		int lowestVotes = -1;
+
+		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
+
+			CandidateIndex currCandIndex = entry.getKey();
+			Candidate currCand = entry.getValue();
+
+			int currVotes = currCand.getVoteCount();
+			if(lowestVotes == -1 || currVotes < lowestVotes) {
+				lowestVotes = currVotes;
+				elimIndex = Integer.parseInt(currCandIndex.toString());
+			}
+		}
+
+		elim.setValue(elimIndex);
+		return elim;
+	}
+
+	/**
+	 * Helper method to create string to show results of a primary voting round
+	 * @return String containing a description of the primary voting round
+     */
+	private String reportPrimaryVote() {
+		String str = "Counting primary votes; " + cds.size() + " alternatives available";
+		return str;
+
 	}
 }

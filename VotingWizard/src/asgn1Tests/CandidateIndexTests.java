@@ -11,11 +11,13 @@ import static org.junit.Assert.*;
  */
 public class CandidateIndexTests {
 
+    /** setup variables */
     private CandidateIndex index1;
     private CandidateIndex index2;
     private CandidateIndex index3;
     private CandidateIndex index4;
 
+    /** setup */
     @Before
     public void setUp() {
         index1 = new CandidateIndex(1);
@@ -25,7 +27,7 @@ public class CandidateIndexTests {
     }
 
 
-    /* inRange Tests */
+    /** inRange Tests */
     @Test
     public void inRangeTrueTest() {
         for(int i = 1; i <= 15; i++) {
@@ -38,10 +40,8 @@ public class CandidateIndexTests {
         assertFalse(index1.inRange(0));
         assertFalse(index1.inRange(16));
     }
-    /* End */
 
-
-    /* Compare To Tests */
+    /** compareTo Tests */
     @Test
     public void compareToEqual() {
         assertEquals(index3.compareTo(index4), 0);
@@ -56,21 +56,17 @@ public class CandidateIndexTests {
     public void compareToGreaterThan() {
         assertEquals(index3.compareTo(index1), 1);
     }
-    /* End */
 
-
-    /* Copy Tests */
-    @Test public void copyTest() {
+    /** copy Tests */
+    @Test public void deepCopyTest() {
         CandidateIndex indexCopy = index1.copy();
         assertEquals(index1.compareTo(indexCopy), 0);
         index1.setValue(10);
-        assertEquals(indexCopy.toString(), "1");
+        assertEquals(indexCopy.toString(), "1"); // deep check
         assertEquals(index1.toString(), "10");
     }
-    /* End */
 
-
-    /* Increment Index Tests */
+    /** incrementIndex Tests */
     @Test
     public void incrementIndexTest() {
         CandidateIndex temp = new CandidateIndex(4);
@@ -84,15 +80,12 @@ public class CandidateIndexTests {
         assertEquals(temp.compareTo(index1), 0);
         assertEquals(temp1.compareTo(index3), 0);
     }
-    /* End */
 
-
-    /* SetValue Tests */
+    /** SetValue Tests */
     @Test
     public void setValueTest() {
         assertEquals(index1.toString(), "1");
         index1.setValue(10);
-        System.out.println(index1.toString());
         assertEquals(index1.toString(), "10");
     }
 
@@ -101,5 +94,4 @@ public class CandidateIndexTests {
         index1.setValue(-1);
         assertEquals(index1.toString(), "-1");
     }
-    /* End */
 }

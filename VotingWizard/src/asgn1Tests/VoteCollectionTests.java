@@ -19,6 +19,7 @@ public class VoteCollectionTests {
     private TreeMap<CandidateIndex, Candidate> cds;
     private int numCandidates = 5;
     private VoteCollection a;
+    private int numFormalVotes = 12;
 
     /** Candidates */
     private Candidate cand1;
@@ -35,27 +36,11 @@ public class VoteCollectionTests {
     private CandidateIndex candIndex4;
     private CandidateIndex candIndex5;
 
-
-    /** Votes **/
-    private Vote vote1;
-    private Vote vote2;
-    private Vote vote3;
-    private Vote vote4;
-    private Vote vote5;
-
-
-
+    /** setup **/
     @Before
     public void setUp() throws ElectionException {
         a = new VoteCollection(numCandidates);
         cds = new TreeMap<>();
-
-        // Set up dummy votes
-        vote1 = new VoteList(numCandidates);
-        vote2 = new VoteList(numCandidates);
-        vote3 = new VoteList(numCandidates);
-        vote4 = new VoteList(numCandidates);
-        vote5 = new VoteList(numCandidates);
 
         // Set up dummy candidates
         cand1 = new Candidate("a", "AAA", "party A", 0);
@@ -79,57 +64,153 @@ public class VoteCollectionTests {
         cds.put(candIndex4, cand4);
         cds.put(candIndex5, cand5);
 
-        // special vote 1
-        vote1.addPref(2);
-        vote1.addPref(3);
-        vote1.addPref(4);
-        vote1.addPref(1);
-        vote1.addPref(5);
 
-        // Set up VoteLists to be added to VoteCollection
-        for(int i = 1; i <= numCandidates; i++) {
-            vote2.addPref(i);
-            vote3.addPref(i);
-            vote4.addPref(numCandidates - i + 1);
-            vote5.addPref(numCandidates - i + 1);
+
+        for(int i = 0; i < numFormalVotes; i++) {
+            Vote vote = new VoteList(numCandidates);
+            if(i < 3) {
+                vote.addPref(1);
+                vote.addPref(2);
+                vote.addPref(3);
+                vote.addPref(4);
+                vote.addPref(5);
+                a.includeFormalVote(vote);
+            }
+            else if (i >=3 && i < 6) {
+                vote.addPref(2);
+                vote.addPref(1);
+                vote.addPref(5);
+                vote.addPref(3);
+                vote.addPref(4);
+                a.includeFormalVote(vote);
+            }
+            else if(i >= 6 && i < 9) {
+                vote.addPref(3);
+                vote.addPref(5);
+                vote.addPref(1);
+                vote.addPref(2);
+                vote.addPref(4);
+                a.includeFormalVote(vote);
+            }
+            else if(i >= 9 && i < 11) {
+                vote.addPref(4);
+                vote.addPref(3);
+                vote.addPref(5);
+                vote.addPref(1);
+                vote.addPref(2);
+                a.includeFormalVote(vote);
+            }
+            else {
+                vote.addPref(5);
+                vote.addPref(3);
+                vote.addPref(2);
+                vote.addPref(4);
+                vote.addPref(1);
+                a.includeFormalVote(vote);
+            }
         }
 
-        // Add votes to VoteCollection
-        a.includeFormalVote(vote1);
-        a.includeFormalVote(vote2);
-        a.includeFormalVote(vote3);
-        a.includeFormalVote(vote4);
-        a.includeFormalVote(vote5);
-
+        /* Votes
+        1 2 3 4 5
+        1 2 3 4 5
+        1 2 3 4 5
+        2 1 5 3 4
+        2 1 5 3 4
+        2 1 5 3 4
+        3 5 1 2 4
+        3 5 1 2 4
+        3 5 1 2 4
+        4 3 5 1 2
+        4 3 5 1 2
+        5 3 2 4 1
+         */
     }
 
+    /** constructor Test */
     @Test (expected = ElectionException.class)
     public void constructorBadParameter() throws ElectionException {
         VoteCollection b = new VoteCollection(-1);
     }
 
+    /** countPrimaryVotes Test*/
     @Test
-    @Ignore
     public void countPrimaryVotesTest() {
         a.countPrimaryVotes(cds);
-//        for(Map.Entry<CandidateIndex, Candidate> entry:  cds.entrySet()) {
-//            System.out.println(entry.toString());
-//        }
-        assertEquals(cds.get(candIndex1).getVoteCount(), 2);
-        assertEquals(cds.get(candIndex2).getVoteCount(), 0);
-        assertEquals(cds.get(candIndex3).getVoteCount(), 0);
-        assertEquals(cds.get(candIndex4).getVoteCount(), 1);
-        assertEquals(cds.get(candIndex5).getVoteCount(), 2);
+
+        assertEquals(cds.get(candIndex1).getVoteCount(), 3);
+        assertEquals(cds.get(candIndex2).getVoteCount(), 3);
+        assertEquals(cds.get(candIndex3).getVoteCount(), 3);
+        assertEquals(cds.get(candIndex4).getVoteCount(), 2);
+        assertEquals(cds.get(candIndex5).getVoteCount(), 1);
+    }
+
+    /** countPrefVotes Tests */
+    @Test
+    public void countPrefVotesTestRound1() {
+        a.countPrimaryVotes(cds);
+        cds.remove(candIndex5);
+        a.countPrefVotes(cds, candIndex5);
+        assertEquals(cds.get(candIndex1).getVoteCount(), 3);
+        assertEquals(cds.get(candIndex2).getVoteCount(), 3);
+        assertEquals(cds.get(candIndex3).getVoteCount(), 4);
+        assertEquals(cds.get(candIndex4).getVoteCount(), 2);
+
     }
 
     @Test
-    public void countPrefVotesTest() {
-        a.countPrimaryVotes(cds);
-        a.countPrefVotes(cds, candIndex1);
+    public void countPrefVotesTestRound2() {
+        countPrefVotesTestRound1();
+
+        // eliminate candidateIndex1
+        cds.remove(candIndex4);
+        a.countPrefVotes(cds, candIndex4);
+        assertEquals(cds.get(candIndex1).getVoteCount(), 3);
+        assertEquals(cds.get(candIndex2).getVoteCount(), 5);
+        assertEquals(cds.get(candIndex3).getVoteCount(), 4);
     }
 
+    @Test
+    public void countPrefVotesTestRound3() {
+        countPrefVotesTestRound2();
 
+        cds.remove(candIndex1);
+        a.countPrefVotes(cds, candIndex1);
+        assertEquals(cds.get(candIndex2).getVoteCount(), 8);
+        assertEquals(cds.get(candIndex3).getVoteCount(), 4);
+    }
 
+    @Test
+    public void countPrefVotesTestRound4() {
+        countPrefVotesTestRound3();
+        cds.remove(candIndex3);
+        a.countPrefVotes(cds, candIndex3);
+        assertEquals(cds.get(candIndex2).getVoteCount(), 12);
+    }
+
+    @Test
+    public void emptyCollectionTest() {
+        a.emptyTheCollection();
+        System.out.println(a.toString());
+    }
+
+    /** getters Tests */
+    @Test
+    public void getFormalCount() {
+        assertEquals(a.getFormalCount(), numFormalVotes);
+    }
+
+    @Test
+    public void getFormalCountIncrement() {
+        Vote vote = new VoteList(numCandidates);
+        vote.addPref(1);
+        vote.addPref(2);
+        vote.addPref(3);
+        vote.addPref(4);
+        vote.addPref(5);
+        a.includeFormalVote(vote);
+
+        assertEquals(a.getFormalCount(), numFormalVotes + 1);
+    }
 
 
 

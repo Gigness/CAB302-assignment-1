@@ -72,16 +72,17 @@ public class VoteCollection implements Collection {
 		for(Vote vote: voteList) {
 
 			boolean invalidVote = false;
-			for(int candidate: vote) {
+			for(int candidate: vote.invertVote()) {
 
 				CandidateIndex ci = new CandidateIndex(candidate);
-				if(cds.containsKey(ci) && ci != elim) {
+
+				if(cds.containsKey(ci) && ci.compareTo(elim) != 0) {
 					if(invalidVote) {
 						cds.get(ci).incrementVoteCount();
 						numVotesDistributed++;
 					}
 					break;
-				} else if(ci == elim) {
+				} else if(ci.compareTo(elim) == 0) {
 					invalidVote = true;
 				}
 				// if candidate exists in treeMap and is not the eliminated candidate
@@ -98,9 +99,7 @@ public class VoteCollection implements Collection {
 					// set invalidVote to true
 
 			}
-
 		}
-
 	}
 
 	/*
@@ -111,32 +110,10 @@ public class VoteCollection implements Collection {
 	@Override
 	public void countPrimaryVotes(TreeMap<CandidateIndex, Candidate> cds) {
 		for(Vote vote: voteList) {
-//			Vote invertedVote = vote.invertVote();
-
-			// get first preference, which is first index of invertedVote
-//			CandidateIndex firstPref = vote.getPreference(1);
 			CandidateIndex firstPref = getPrimaryKey(vote);
 			Candidate prefCand = cds.get(firstPref);
 			prefCand.incrementVoteCount();
 		}
-//		 View Inverted Votes
-//					System.out.println("inverted votelist");
-//
-//		for(Vote vote: voteList) {
-//			System.out.println(vote.invertVote());
-//		}
-
-//		Debugging
-//		System.out.println("formalCount: " + formalCount);
-//		System.out.println("informalCount: " + informalCount);
-//		System.out.println("voteList: ");
-//		for(Vote vote: voteList) {
-//			System.out.println(vote);
-//		}
-//		System.out.println("voteList inverted:" );
-//		for(Vote vote: voteList) {
-//			System.out.println(vote.invertVote());
-//		}
 	}
 
 	/*
@@ -223,6 +200,7 @@ public class VoteCollection implements Collection {
 	 * 
 	 */
 	private CandidateIndex getPrefthKey(Vote v,TreeMap<CandidateIndex, Candidate> cds, int pref) {
+
 		return null;
 	}
 
