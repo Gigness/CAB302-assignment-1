@@ -67,37 +67,35 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds, CandidateIndex elim) {
+		// if candidate exists in treeMap and is not the eliminated candidate
+		// if its an invalid vote -
+		// redistribute it to this candidate
+		// break we donzo
+		// else
+		// we good, don't have to do anything
+		// the vote is still current
+		// break;
 
-		int numVotesDistributed = 0;
+		// else if candidate  is an elim candidate
+		// this vote is invalid and must be redistributed
+		// set invalidVote to true
 		for(Vote vote: voteList) {
 
 			boolean invalidVote = false;
 			for(int candidate: vote.invertVote()) {
 
 				CandidateIndex ci = new CandidateIndex(candidate);
-
 				if(cds.containsKey(ci) && ci.compareTo(elim) != 0) {
+
 					if(invalidVote) {
+
 						cds.get(ci).incrementVoteCount();
-						numVotesDistributed++;
 					}
 					break;
 				} else if(ci.compareTo(elim) == 0) {
+
 					invalidVote = true;
 				}
-				// if candidate exists in treeMap and is not the eliminated candidate
-					// if its an invalid vote -
-						// redistribute it to this candidate
-						// break we donzo
-					// else
-					// we good, don't have to do anything
-					// the vote is still current
-					// break;
-
-				// else if candidate  is an elim candidate
-					// this vote is invalid and must be redistributed
-					// set invalidVote to true
-
 			}
 		}
 	}

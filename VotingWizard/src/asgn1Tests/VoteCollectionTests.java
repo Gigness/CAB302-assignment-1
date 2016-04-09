@@ -20,6 +20,7 @@ public class VoteCollectionTests {
     private int numCandidates = 5;
     private VoteCollection a;
     private int numFormalVotes = 12;
+    private int numInformalVotes = 3;
 
     /** Candidates */
     private Candidate cand1;
@@ -63,8 +64,6 @@ public class VoteCollectionTests {
         cds.put(candIndex3, cand3);
         cds.put(candIndex4, cand4);
         cds.put(candIndex5, cand5);
-
-
 
         for(int i = 0; i < numFormalVotes; i++) {
             Vote vote = new VoteList(numCandidates);
@@ -193,7 +192,19 @@ public class VoteCollectionTests {
         System.out.println(a.toString());
     }
 
-    /** getters Tests */
+    /** includeFormalVote Tests */
+    @Test
+    public void includeFormalVoteTest() {
+        Vote dummyVote = new VoteList(numCandidates);
+        dummyVote.addPref(1);
+        a.includeFormalVote(dummyVote);
+
+        // Originally cand1 has 3 votes, should have 4 after dummy Vote
+        a.countPrimaryVotes(cds);
+        assertEquals(cds.get(candIndex1).getVoteCount(), 4);
+    }
+
+    /** getFormalCount Tests */
     @Test
     public void getFormalCount() {
         assertEquals(a.getFormalCount(), numFormalVotes);
@@ -212,6 +223,18 @@ public class VoteCollectionTests {
         assertEquals(a.getFormalCount(), numFormalVotes + 1);
     }
 
+    /** updateInformalCount Tests */
+    @Test
+    public void updateInformalCountTest() {
+        assertEquals(a.getInformalCount(), 0);
+    }
 
+    @Test
+    public void updateInformalCountIncrement() {
+        for(int i = 0; i < numInformalVotes; i++) {
+            a.updateInformalCount();
+        }
 
+        assertEquals(a.getInformalCount(), numInformalVotes);
+    }
 }

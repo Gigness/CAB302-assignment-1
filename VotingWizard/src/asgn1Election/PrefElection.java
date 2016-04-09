@@ -6,7 +6,6 @@
  */
 package asgn1Election;
 
-import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -33,14 +32,6 @@ public class PrefElection extends Election {
 		this.type = PrefVoting;
 	}
 
-	public void testMethodOnly() {
-		vc.countPrimaryVotes(cds);
-
-		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
-			System.out.println(entry);
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 *
@@ -48,18 +39,15 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	public String findWinner() {
-		System.out.println(" TEST ");
-		vc.printVoteCollectionInvert();
-		System.out.println(" END ");
+
+		int numWinVotes;
+		double halfFormalVotes;
+		Candidate winner;
+
 		System.out.print(showResultHeader());
-		// number of votes (double)
-		double numWinVotesDouble = vc.getFormalCount() * 0.5;
-
-		// number of votes required to win the pref. election
-		int numWinVotes = (int) Math.ceil(numWinVotesDouble);
-
-		Candidate winner = clearWinner(numWinVotes);
-
+		halfFormalVotes = vc.getFormalCount() * 0.5;
+		numWinVotes = (int) Math.ceil(halfFormalVotes);
+		winner = clearWinner(numWinVotes);
 		return reportWinner(winner);
 	}
 
@@ -74,17 +62,11 @@ public class PrefElection extends Election {
 		for(int pref: v) {
 			voteSet.add(pref);
 		}
-
-//		System.out.println(voteSet);
-
 		if(voteSet.size() != numCandidates) {
-//			System.out.println("num votes in vote set invalid");
 			return false;
 		}
-
 		for(int i = 1; i <= numCandidates; i++) {
 			if(!voteSet.contains(i)) {
-//				System.out.println("does not contain candidate: " + i);
 				return false;
 			}
 		}
@@ -112,11 +94,11 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	protected Candidate clearWinner(int winVotes) {
-		boolean noTie = true;
 		vc.countPrimaryVotes(cds);
 		System.out.println(reportPrimaryVote());
 		System.out.print(reportCountStatus());
-		while(cds.size() > 2 && noTie) {
+
+		while(cds.size() > 2) {
 			CandidateIndex elim = selectLowestCandidate();
 			System.out.println(prefDistMessage(cds.get(elim)));
 			cds.remove(elim);
@@ -135,6 +117,7 @@ public class PrefElection extends Election {
 		else if(finalCand2.getValue().getVoteCount() > winVotes) {
 			winnerIndex = finalCand2.getKey();
 		}
+		// TODO Tie checking
 		else if(finalCand1.getValue().getVoteCount() == finalCand2.getValue().getVoteCount()) {
 			CandidateIndex elim = finalCand1.getKey().copy();
 			System.out.println(prefDistMessage(cds.get(elim)));
@@ -143,7 +126,6 @@ public class PrefElection extends Election {
 			System.out.print(reportCountStatus());
 			winnerIndex = finalCand2.getKey().copy();
 		}
-
 
 		if(winnerIndex == null) {
 			System.out.println("No Winner found, weird...");
@@ -219,6 +201,10 @@ public class PrefElection extends Election {
 	private String reportPrimaryVote() {
 		String str = "Counting primary votes; " + cds.size() + " alternatives available";
 		return str;
+
+	}
+
+	private void tieBreak() {
 
 	}
 }

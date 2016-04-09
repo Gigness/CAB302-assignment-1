@@ -6,6 +6,7 @@
  */
 package asgn1Election;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -40,9 +41,8 @@ public class SimpleElection extends Election {
 	@Override
 	public String findWinner() {
 
-		clearWinner(0);
-
-		String results =  "Simple Election Results:";
+		Candidate winner = clearWinner(0);
+		String results =  reportWinner(winner);
 		return results;
 	}
 
@@ -56,18 +56,18 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
+		int numPrefs = 0;
 		int numOnes = 0;
 		for(int pref: v) {
+			numPrefs++;
 			if(pref == 1) {
 				numOnes++;
 			}
 			else if(pref > numCandidates) {
-//				System.out.println(pref + " not in range");
 				return false;
 			}
 		}
-		if(numOnes != 1) {
-//			System.out.println("num Ones: " + numOnes);
+		if(numOnes != 1 || numPrefs != numCandidates) {
 			return false;
 		} else {
 			return true;
@@ -94,23 +94,33 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	protected Candidate clearWinner(int wVotes) {
-		// wVotes is useless for a SimpleElection, a candidate simply needs a majority
+		int highestVotes = 0;
+		Integer votes;
+		Candidate winner = null;
 
-		// count the primary votes in the collection
 		vc.countPrimaryVotes(cds);
 
-		ArrayList<CandidateIndex> mostVotes_candidate;
-
-		int highestVotes = 0;
-
 		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
-			Candidate currentCandidate = entry.getValue();
-			int votes = entry.getValue().getVoteCount();
-			if(votes > highestVotes) {
+
+			Candidate currentCandidate;
+
+			currentCandidate = entry.getValue();
+			votes = entry.getValue().getVoteCount();
+
+			if(highestVotes == 0) {
+				winner = currentCandidate;
 				highestVotes = votes;
 			}
+			else if(votes > highestVotes) {
+				highestVotes = votes;
+				winner = currentCandidate;
+			}
 		}
-		return null;
+
+		if(winner == null) {
+			System.out.println("winner is never set...");
+		}
+		return winner;
 	}
 
 	/**
