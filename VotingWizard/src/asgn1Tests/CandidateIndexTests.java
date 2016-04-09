@@ -26,8 +26,9 @@ public class CandidateIndexTests {
         index4 = new CandidateIndex(8);
     }
 
-
-    /** inRange Tests */
+    /**
+     * inRange Test
+     */
     @Test
     public void inRangeTrueTest() {
         for(int i = 1; i <= 15; i++) {
@@ -79,19 +80,5 @@ public class CandidateIndexTests {
         index1.incrementIndex();
         assertEquals(temp.compareTo(index1), 0);
         assertEquals(temp1.compareTo(index3), 0);
-    }
-
-    /** SetValue Tests */
-    @Test
-    public void setValueTest() {
-        assertEquals(index1.toString(), "1");
-        index1.setValue(10);
-        assertEquals(index1.toString(), "10");
-    }
-
-    @Test
-    public void setValueNegativeTest() {
-        index1.setValue(-1);
-        assertEquals(index1.toString(), "-1");
     }
 }

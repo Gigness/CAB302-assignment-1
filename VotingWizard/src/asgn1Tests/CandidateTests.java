@@ -25,7 +25,7 @@ public class CandidateTests {
         testCandidate = new Candidate(name, party, abbrev, voteCount);
     }
 
-    /** Constructor Tests */
+    /** Constructor Exceptions Tests */
     @Test (expected = ElectionException.class)
     public void candidateNameNull() throws Exception {
         Candidate candidate1 = new Candidate(null, "YOLOSWAG", "YLO", 420);
@@ -46,13 +46,6 @@ public class CandidateTests {
         Candidate candidate1 = new Candidate("Yolo", "YOLOSWAG", "YLO", -1);
     }
 
-    /** Candidate Listing Test */
-    @Test
-    public void candidateListing() throws Exception {
-
-        System.out.println(testCandidate.candidateListing());
-    }
-
     /** copy Test */
     @Test
     public void copy() throws Exception {
@@ -67,14 +60,7 @@ public class CandidateTests {
     @Test
     public void deepCopyTest() throws Exception {
         Candidate copy = testCandidate.copy();
-
-        assertEquals(copy.getName(), testCandidate.getName());
-        assertEquals(copy.getParty(), testCandidate.getParty());
-        assertEquals(copy.getVoteCount(), testCandidate.getVoteCount());
-        assertEquals(copy.getVoteCountString(), testCandidate.getVoteCountString());
-
         testCandidate.incrementVoteCount();
-
         assertFalse(copy.getVoteCount() == testCandidate.getVoteCount());
         assertEquals(copy.getVoteCount(), 0);
         assertEquals(testCandidate.getVoteCount(), 1);
@@ -84,27 +70,6 @@ public class CandidateTests {
     public void invalidCopy() throws Exception {
         Candidate candidate = new Candidate("a", null, "aaa", 0);
         Candidate copy1 = candidate.copy();
-    }
-
-    /** Getters Test */
-    @Test
-    public void getName() {
-        assertEquals(testCandidate.getName(), name);
-    }
-
-    @Test
-    public void getParty() {
-        assertEquals(testCandidate.getParty(), party);
-    }
-
-    @Test
-    public void getVoteCount() {
-        assertEquals(testCandidate.getVoteCount(), voteCount);
-    }
-
-    @Test
-    public void getVoteCountString() {
-        assertEquals(testCandidate.getVoteCountString(), String.valueOf(voteCount));
     }
 
     /** Increment Vote */

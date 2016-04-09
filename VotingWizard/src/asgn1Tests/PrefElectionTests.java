@@ -22,6 +22,9 @@ public class PrefElectionTests {
     private PrefElection elecD;
     private int numCandidates = 3;
 
+    /**
+     * setUp
+     */
     @Before
     public void setUp() throws Exception {
         elecA = new PrefElection("MinMorgulVale");
@@ -128,7 +131,7 @@ public class PrefElectionTests {
     }
 
     @Test
-    public void isFormalMisisngCandidateTest() {
+    public void isFormalMissingCandidateTest() {
         Vote v = new VoteList(numCandidates);
         v.addPref(1);
         v.addPref(2);
