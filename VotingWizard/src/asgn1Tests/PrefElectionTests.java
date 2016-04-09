@@ -1,11 +1,13 @@
 package asgn1Tests;
 
-import asgn1Election.PrefElection;
-import asgn1Election.Vote;
-import asgn1Election.VoteList;
+import asgn1Election.*;
+import asgn1Util.NumbersException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -30,9 +32,46 @@ public class PrefElectionTests {
         elecC.loadVotes();
     }
 
-    /** exceptions */
-    public void election_NumbersExceptionTest() {
-        PrefElection test = new PrefElection("");
+    /** loadDefs */
+    @Test(expected = ElectionException.class)
+    public void notEnoughCandidates_ExceptionTest() throws NumbersException, IOException, ElectionException {
+        PrefElection test = new PrefElection("loadDefs");
+        test.loadDefs();
+    }
+
+    @Test(expected = ElectionException.class)
+    public void incorrectHeader_ExceptionTest() throws NumbersException, IOException, ElectionException {
+        PrefElection test = new PrefElection("loadDefs1");
+        test.loadDefs();
+    }
+
+    @Test
+    public void loadDefs_MinMorguleVale() throws ElectionException {
+        java.util.Collection<Candidate> candidates = elecA.getCandidates();
+        ArrayList<Candidate> expectedCandidates= new ArrayList<>();
+        int counter = 0;
+
+        Candidate shelob = new Candidate("Shelob", "Monster Spider Party", "MSP", 0 );
+        Candidate gorbag = new Candidate("Gorbag", "Filthy Orc Party", "FOP", 0 );
+        Candidate shagrat = new Candidate("Shagrat", "Stinking Orr Party", "SOP", 0 );
+
+        expectedCandidates.add(shelob);
+        expectedCandidates.add(gorbag);
+        expectedCandidates.add(shagrat);
+
+
+        for(Candidate c: candidates) {
+            assertEquals(c.toString(), expectedCandidates.get(counter).toString());
+            counter++;
+        }
+    }
+
+    /** loadVotes */
+    @Test (expected = ElectionException.class)
+    public void incorrectVoteFormat_ExceptionTest() throws NumbersException, IOException, ElectionException {
+        PrefElection test = new PrefElection("loadVotes");
+        test.loadDefs();
+        test.loadVotes();
     }
 
     /** findWinner */
