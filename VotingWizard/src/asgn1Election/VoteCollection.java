@@ -80,20 +80,15 @@ public class VoteCollection implements Collection {
 		// this vote is invalid and must be redistributed
 		// set invalidVote to true
 		for(Vote vote: voteList) {
-
 			boolean invalidVote = false;
 			for(int candidate: vote.invertVote()) {
-
 				CandidateIndex ci = new CandidateIndex(candidate);
 				if(cds.containsKey(ci) && ci.compareTo(elim) != 0) {
-
 					if(invalidVote) {
-
 						cds.get(ci).incrementVoteCount();
 					}
 					break;
 				} else if(ci.compareTo(elim) == 0) {
-
 					invalidVote = true;
 				}
 			}

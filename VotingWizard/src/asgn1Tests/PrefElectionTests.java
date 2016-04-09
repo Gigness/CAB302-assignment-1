@@ -19,6 +19,7 @@ public class PrefElectionTests {
     private PrefElection elecA;
     private PrefElection elecB;
     private PrefElection elecC;
+    private PrefElection elecD;
     private int numCandidates = 3;
 
     @Before
@@ -27,9 +28,17 @@ public class PrefElectionTests {
         elecA.loadDefs();
         elecA.loadVotes();
 
-        elecC = new PrefElection("MinMorgulValeTie");
+        elecB = new PrefElection("MinMorgulValeTie");
+        elecB.loadDefs();
+        elecB.loadVotes();
+
+        elecC = new PrefElection("MorgulVale");
         elecC.loadDefs();
         elecC.loadVotes();
+
+        elecD = new PrefElection("AbsoluteMajority");
+        elecD.loadDefs();
+        elecD.loadVotes();
     }
 
     /** loadDefs */
@@ -46,7 +55,7 @@ public class PrefElectionTests {
     }
 
     @Test
-    public void loadDefs_MinMorguleVale() throws ElectionException {
+    public void loadDefs_MinMorgulVale() throws ElectionException {
         java.util.Collection<Candidate> candidates = elecA.getCandidates();
         ArrayList<Candidate> expectedCandidates= new ArrayList<>();
         int counter = 0;
@@ -75,20 +84,38 @@ public class PrefElectionTests {
     }
 
     /** findWinner */
-//    @Test
-//    public void findWinner_absoluteMajorityTest() {
-//        elecA.findWinner();
-//    }
+    @Test
+    public void findWinner_MinMorgulValeTest() {
+        String statement = elecA.findWinner();
+        String expected_statement = "\nCandidate Shelob (Monster Spider Party)" +
+                " is the winner with 10 votes...\n";
+        assertEquals(statement, expected_statement);
+    }
 
-//    @Test
-//    public void findWinner_eliminationTest() {
-//        elecA.findWinner();
-//    }
+    @Test
+    public void findWinner_MinMorgulValeTieTest() {
+        String statement = elecB.findWinner();
+        String expected_statement = "\nCandidate Gorbag (Filthy Orc Party)" +
+                " is the winner with 18 votes...\n";
+        assertEquals(statement, expected_statement);
+    }
 
-//    @Test
-//    public void findWinner_tieTest() {
-//        elecA.findWinner();
-//    }
+    @Test
+    public void findWinner_MorgulValeTest() {
+        String statement = elecC.findWinner();
+        String expected_statement = "\nCandidate Black Rider (Nazgul Party) " +
+                "is the winner with 16 votes...\n";
+        assertEquals(statement, expected_statement);
+    }
+
+    @Test
+    public void findWinner_AbsoluteMajorityTest() {
+        String statement = elecD.findWinner();
+        System.out.println(elecD.toString());
+        String expected_statement = "\nCandidate VapeNation (Vapenayshun)" +
+                " is the winner with 13 votes...\n";
+        assertEquals(statement, expected_statement);
+    }
 
     /** isFormal tests */
     @Test
@@ -133,6 +160,4 @@ public class PrefElectionTests {
         v.addPref(2);
         assertFalse(elecA.isFormal(v));
     }
-
-
 }
