@@ -1,12 +1,9 @@
 package asgn1Tests;
 
 import asgn1Election.*;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.Map;
 import java.util.TreeMap;
 
 import static org.junit.Assert.*;
@@ -189,7 +186,8 @@ public class VoteCollectionTests {
     @Test
     public void emptyCollectionTest() {
         a.emptyTheCollection();
-        System.out.println(a.toString());
+        assertEquals(a.getInformalCount(), 0);
+        assertEquals(a.getFormalCount(), 0);
     }
 
     /** includeFormalVote Tests */
@@ -234,7 +232,8 @@ public class VoteCollectionTests {
         for(int i = 0; i < numInformalVotes; i++) {
             a.updateInformalCount();
         }
-
         assertEquals(a.getInformalCount(), numInformalVotes);
     }
+
+
 }

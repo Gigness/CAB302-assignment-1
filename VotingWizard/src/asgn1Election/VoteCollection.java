@@ -7,7 +7,6 @@
 package asgn1Election;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -40,9 +39,6 @@ public class VoteCollection implements Collection {
 
 	/** Number of invalid votes received during the election */
 	private int informalCount;
-
-	/** Votes associated with Candidates */
-	private TreeMap<CandidateIndex, ArrayList<Vote>> distributedVotes;
 
 	/**
 	 * Simple Constructor for the <code>VoteCollection</code> class.
@@ -117,6 +113,8 @@ public class VoteCollection implements Collection {
 	@Override
 	public void emptyTheCollection() {
 		voteList.clear();
+		formalCount = 0;
+		informalCount = 0;
 	}
 
 	/*
@@ -193,7 +191,6 @@ public class VoteCollection implements Collection {
 	 * 
 	 */
 	private CandidateIndex getPrefthKey(Vote v,TreeMap<CandidateIndex, Candidate> cds, int pref) {
-
 		return null;
 	}
 

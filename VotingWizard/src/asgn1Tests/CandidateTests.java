@@ -2,7 +2,6 @@ package asgn1Tests;
 
 import asgn1Election.Candidate;
 import asgn1Election.ElectionException;
-import asgn1Election.ElectionManager;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,11 +12,14 @@ import static org.junit.Assert.*;
  */
 public class CandidateTests {
 
+
     private Candidate testCandidate;
     private String name = "Paul Foo";
     private String party = "vapenation";
     private String abbrev = "VN";
     private int voteCount = 0;
+
+    private Candidate candidate1;
 
     /** Set up */
     @Before
@@ -28,23 +30,44 @@ public class CandidateTests {
     /** Constructor Exceptions Tests */
     @Test (expected = ElectionException.class)
     public void candidateNameNull() throws Exception {
-        Candidate candidate1 = new Candidate(null, "YOLOSWAG", "YLO", 420);
+        candidate1 = new Candidate(null, "YOLOSWAG", "YLO", 420);
+    }
+
+    @Test
+    public void candidateNameOkay() throws Exception {
+        candidate1 = new Candidate("Yolo", "YOLOSWAG", "YLO", 420);
     }
 
     @Test (expected = ElectionException.class)
     public void candidatePartyNull() throws Exception {
-        Candidate candidate1 = new Candidate("Yolo", null, "YLO", 420);
+        candidate1 = new Candidate("Yolo", null, "YLO", 420);
+    }
+
+    @Test
+    public void candidatePartyOkay() throws Exception {
+        candidate1 = new Candidate("Yolo", "YOLOSWAG", "YLO", 420);
     }
 
     @Test (expected = ElectionException.class)
     public void candidateAbbrevNull() throws Exception {
-        Candidate candidate1 = new Candidate("Yolo", "YOLOSWAG", null, 420);
+        candidate1 = new Candidate("Yolo", "YOLOSWAG", null, 420);
+    }
+
+    @Test
+    public void candidateAbbrevOkay() throws Exception {
+        candidate1 = new Candidate("Yolo", "YOLOSWAG", "YLO", 420);
     }
 
     @Test (expected = ElectionException.class)
     public void candidateVoteNegative() throws Exception {
-        Candidate candidate1 = new Candidate("Yolo", "YOLOSWAG", "YLO", -1);
+        candidate1 = new Candidate("Yolo", "YOLOSWAG", "YLO", -1);
     }
+
+    @Test
+    public void candidateVoteCountZero() throws ElectionException {
+        candidate1 = new Candidate("yolo", "YOLOSWAG", "YLO", 0);
+    }
+
 
     /** copy Test */
     @Test
@@ -64,12 +87,6 @@ public class CandidateTests {
         assertFalse(copy.getVoteCount() == testCandidate.getVoteCount());
         assertEquals(copy.getVoteCount(), 0);
         assertEquals(testCandidate.getVoteCount(), 1);
-    }
-
-    @Test (expected = ElectionException.class)
-    public void invalidCopy() throws Exception {
-        Candidate candidate = new Candidate("a", null, "aaa", 0);
-        Candidate copy1 = candidate.copy();
     }
 
     /** Increment Vote */

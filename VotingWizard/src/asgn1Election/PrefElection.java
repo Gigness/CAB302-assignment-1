@@ -208,4 +208,9 @@ public class PrefElection extends Election {
 		return str;
 
 	}
+
+	//TODO test method
+	public void print_invertedVotes() {
+		vc.printVoteCollectionInvert();
+	}
 }

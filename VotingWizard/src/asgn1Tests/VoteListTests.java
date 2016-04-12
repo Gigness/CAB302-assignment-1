@@ -1,6 +1,5 @@
 package asgn1Tests;
 
-import asgn1Election.Candidate;
 import asgn1Election.CandidateIndex;
 import asgn1Election.Vote;
 import asgn1Election.VoteList;
@@ -8,7 +7,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import static org.junit.Assert.*;
@@ -25,7 +23,7 @@ public class VoteListTests {
 
     /** setup */
     @Before
-    public void voteListConstuct() {
+    public void voteListConstuctTest() {
         a = new VoteList(candidateNum);
         b = new VoteList(candidateNum + 1);
 
@@ -36,18 +34,18 @@ public class VoteListTests {
 
     /** addPref tests */
     @Test
-    public void addPrefOne() {
+    public void addPrefOneTest() {
         assertTrue(b.addPref(7));
         assertEquals(b.toString(), "7 ");
     }
 
     @Test
-    public void addPrefFull() {
+    public void addPrefFullTest() {
         assertEquals(a.toString(), "1 2 3 4 5 6 7 ");
     }
 
     @Test
-    public void addPrefOverFill() {
+    public void addPrefOverFillTest() {
         assertFalse(a.addPref(8));
         assertEquals(a.toString(), "1 2 3 4 5 6 7 ");
         for(int i = 1; i <= candidateNum + 1; i++) {
@@ -66,7 +64,7 @@ public class VoteListTests {
     }
 
     @Test
-    public void outOfRangePref() {
+    public void addPrefoutOfRangeCandidateTest() {
         assertFalse(b.addPref(16));
         assertFalse(b.addPref(0));
     }
@@ -160,27 +158,10 @@ public class VoteListTests {
         assertEquals(invertedVotesB.toString(), "7 2 1 3 4 5 6 8 ");
     }
 
-    // TODO - assumption informal votes will not be inverted and thus not needed to be checked....
-    @Test
-    @Ignore
-    public void invertVoteTestDuplicate() {
-        b.addPref(1);
-        b.addPref(2);
-        b.addPref(3);
-        b.addPref(8);
-        b.addPref(8);
-        b.addPref(7);
-        b.addPref(6);
-        b.addPref(5);
-        Vote invertedVotesB = b.invertVote();
-        System.out.println(invertedVotesB);
-    }
-
-
     /** iterator Tests */
     @Test
     public void iteratorTest() {
-        Iterator aIterator = a.iterator();
+        Iterator<Integer> aIterator = a.iterator();
         int pref = 1;
         while(aIterator.hasNext()) {
             Object aPref = aIterator.next();

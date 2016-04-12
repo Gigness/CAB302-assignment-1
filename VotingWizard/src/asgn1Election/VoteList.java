@@ -39,8 +39,6 @@ public class VoteList implements Vote {
 		vote = new ArrayList<>();
 	}
 
-
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -92,7 +90,6 @@ public class VoteList implements Vote {
 	@Override
 	public Vote invertVote() {
 		Vote invertedVote = new VoteList(numCandidates);
-
 		for(int i = 1; i <= numCandidates; i++) {
 			int candidate = vote.indexOf(i) + 1; // Because zero indexed arrays, and candidate Indexes are 1 based
 			invertedVote.addPref(candidate);

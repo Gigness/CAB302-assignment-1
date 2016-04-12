@@ -3,7 +3,6 @@ package asgn1Tests;
 import asgn1Election.*;
 import asgn1Util.NumbersException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -58,6 +57,11 @@ public class PrefElectionTests {
     }
 
     @Test
+    public void loadDefs_ElectionSettingsPrefElectionTest() {
+        assertEquals(elecA.getType(), 1);
+    }
+
+    @Test
     public void loadDefs_MinMorgulVale() throws ElectionException {
         java.util.Collection<Candidate> candidates = elecA.getCandidates();
         ArrayList<Candidate> expectedCandidates= new ArrayList<>();
@@ -84,6 +88,11 @@ public class PrefElectionTests {
         PrefElection test = new PrefElection("loadVotes");
         test.loadDefs();
         test.loadVotes();
+    }
+
+    @Test
+    public void numberOfInformalAndFormalVotesEqualsNumberOfVotesInFile() {
+
     }
 
     /** findWinner */
@@ -162,5 +171,10 @@ public class PrefElectionTests {
         v.addPref(1);
         v.addPref(2);
         assertFalse(elecA.isFormal(v));
+    }
+
+    @Test
+    public void test1() {
+        elecA.print_invertedVotes();
     }
 }

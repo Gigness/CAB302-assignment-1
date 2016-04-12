@@ -32,14 +32,14 @@ public class CandidateIndexTests {
     @Test
     public void inRangeTrueTest() {
         for(int i = 1; i <= 15; i++) {
-            assertTrue(index1.inRange(i));
+            assertTrue(CandidateIndex.inRange(i));
         }
     }
 
     @Test
     public void inRangeFalse() {
-        assertFalse(index1.inRange(0));
-        assertFalse(index1.inRange(16));
+        assertFalse(CandidateIndex.inRange(0));
+        assertFalse(CandidateIndex.inRange(16));
     }
 
     /** compareTo Tests */
