@@ -32,23 +32,48 @@ public class PrefElection extends Election {
 		this.type = PrefVoting;
 	}
 
+	private String result;
+
 	/*
 	 * (non-Javadoc)
 	 *
 	 * @see asgn1Election.Election#findWinner()
 	 */
+//	@Override
+//	public String findWinner() {
+//		int numWinVotes;
+//		double halfFormalVotes;
+//		Candidate winner;
+//
+//		System.out.print(showResultHeader());
+//		halfFormalVotes = vc.getFormalCount() * 0.5;
+//		numWinVotes = (int) Math.floor(halfFormalVotes);
+//		winner = clearWinner(numWinVotes);
+//		return reportWinner(winner);
+//	}
+
 	@Override
 	public String findWinner() {
 		int numWinVotes;
 		double halfFormalVotes;
-		Candidate winner;
+		Candidate winner = null;
+		this.result = showResultHeader();
 
-		System.out.print(showResultHeader());
+		vc.countPrimaryVotes(cds);
+		result += (reportPrimaryVote()) + "\n";
+		result += (reportCountStatus());
+
 		halfFormalVotes = vc.getFormalCount() * 0.5;
 		numWinVotes = (int) Math.floor(halfFormalVotes);
-		winner = clearWinner(numWinVotes);
-		return reportWinner(winner);
+
+		while(winner == null) {
+			winner = clearWinner(numWinVotes);
+		}
+
+		result += reportWinner(winner);
+		return result;
 	}
+
 
 	/*
 	 * (non-Javadoc)
@@ -86,58 +111,82 @@ public class PrefElection extends Election {
 	// Protected and Private/helper methods below///
 
 
+	@Override
+	protected Candidate clearWinner(int winVotes) {
+
+		CandidateIndex elim = null;
+		Candidate winner = null;
+
+		// check for absolute majority
+		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
+			if(entry.getValue().getVoteCount() > winVotes) {
+				winner = entry.getValue();
+				return winner;
+			}
+		}
+		// eliminate a candidate
+		elim = selectLowestCandidate();
+		result += prefDistMessage(cds.get(elim)) + "\n";
+		cds.remove(elim);
+		vc.countPrefVotes(cds, elim);
+		result += reportCountStatus();
+
+		return winner;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
 	 * @see asgn1Election.Election#clearWinner(int)
 	 */
-	@Override
-	protected Candidate clearWinner(int winVotes) {
-		boolean absoluteMajorityWin = false;
-		CandidateIndex winnerIndex = null;
-
-		vc.countPrimaryVotes(cds);
-		System.out.println(reportPrimaryVote());
-		System.out.print(reportCountStatus());
-
-		for(Map.Entry<CandidateIndex, Candidate> c: cds.entrySet()) {
-			if(c.getValue().getVoteCount() > winVotes) {
-				winnerIndex = c.getKey();
-				absoluteMajorityWin = true;
-				break;
-			}
-		}
-
-		if(absoluteMajorityWin) {
-			return cds.get(winnerIndex);
-		}
-		else {
-			while(cds.size() > 2) {
-				CandidateIndex elim = selectLowestCandidate();
-				System.out.println(prefDistMessage(cds.get(elim)));
-				cds.remove(elim);
-				vc.countPrefVotes(cds, elim);
-				System.out.print(reportCountStatus());
-			}
-			Map.Entry<CandidateIndex, Candidate> finalCand1 = cds.firstEntry();
-			Map.Entry<CandidateIndex, Candidate> finalCand2 = cds.lastEntry();
-
-			if(finalCand1.getValue().getVoteCount() > winVotes) {
-				winnerIndex = finalCand1.getKey();
-			}
-			else if(finalCand2.getValue().getVoteCount() > winVotes) {
-				winnerIndex = finalCand2.getKey();
-			}
-			else if(finalCand1.getValue().getVoteCount() == finalCand2.getValue().getVoteCount()) {
-				System.out.println(prefDistMessage(cds.get(finalCand1.getKey())));
-				cds.remove(finalCand1.getKey());
-				vc.countPrefVotes(cds, finalCand1.getKey());
-				System.out.print(reportCountStatus());
-				winnerIndex = finalCand2.getKey();
-			}
-			return cds.get(winnerIndex);
-		}
-	}
+//	@Override
+//	protected Candidate clearWinner(int winVotes) {
+//		boolean absoluteMajorityWin = false;
+//		CandidateIndex winnerIndex = null;
+//
+//		vc.countPrimaryVotes(cds);
+//		System.out.println(reportPrimaryVote());
+//		System.out.print(reportCountStatus());
+//
+//		// Checks for an absolute winner
+//		for(Map.Entry<CandidateIndex, Candidate> c: cds.entrySet()) {
+//			if(c.getValue().getVoteCount() > winVotes) {
+//				winnerIndex = c.getKey();
+//				absoluteMajorityWin = true;
+//				break;
+//			}
+//		}
+//
+//		if(absoluteMajorityWin) {
+//			return cds.get(winnerIndex);
+//		}
+//		else {
+//			while(cds.size() > 2) {
+//				CandidateIndex elim = selectLowestCandidate();
+//				System.out.println(prefDistMessage(cds.get(elim)));
+//				cds.remove(elim);
+//				vc.countPrefVotes(cds, elim);
+//				System.out.print(reportCountStatus());
+//			}
+//			Map.Entry<CandidateIndex, Candidate> finalCand1 = cds.firstEntry();
+//			Map.Entry<CandidateIndex, Candidate> finalCand2 = cds.lastEntry();
+//
+//			if(finalCand1.getValue().getVoteCount() > winVotes) {
+//				winnerIndex = finalCand1.getKey();
+//			}
+//			else if(finalCand2.getValue().getVoteCount() > winVotes) {
+//				winnerIndex = finalCand2.getKey();
+//			}
+//			else if(finalCand1.getValue().getVoteCount() == finalCand2.getValue().getVoteCount()) {
+//				System.out.println(prefDistMessage(cds.get(finalCand1.getKey())));
+//				cds.remove(finalCand1.getKey());
+//				vc.countPrefVotes(cds, finalCand1.getKey());
+//				System.out.print(reportCountStatus());
+//				winnerIndex = finalCand2.getKey();
+//			}
+//			return cds.get(winnerIndex);
+//		}
+//	}
 
 	/**
 	 * Helper method to create a preference distribution message for display

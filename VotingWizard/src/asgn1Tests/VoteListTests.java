@@ -170,6 +170,12 @@ public class VoteListTests {
         }
     }
 
+    @Test
+    public void iteratorNotNullTest() {
+        Iterator<Integer> aIterator = a.iterator();
+        assertNotNull(aIterator);
+    }
+
     /** toString Tests */
     @Test
     public void toStringTest() {
