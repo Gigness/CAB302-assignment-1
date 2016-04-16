@@ -23,6 +23,7 @@ public class PrefElectionTests {
     private PrefElection elecC;
     private PrefElection elecD;
     private ExtendedElection elecE;
+    private PrefElection elecF;
     private int numCandidates = 3;
 
     @Before
@@ -46,6 +47,10 @@ public class PrefElectionTests {
         elecE = new ExtendedElection("MorgulVale");
         elecE.loadDefs();
         elecE.loadVotes();
+
+        elecF = new PrefElection("noVotes");
+        elecF.loadDefs();
+        elecF.loadVotes();
     }
 
     /**
@@ -86,7 +91,6 @@ public class PrefElectionTests {
         PrefElection test = new PrefElection("loadDefs9");
         test.loadDefs();
     }
-
 
     @Test(expected = ElectionException.class)
     public void nullCandidates_ElectionExceptionTest() throws NumbersException, IOException, ElectionException {
@@ -168,15 +172,8 @@ public class PrefElectionTests {
         test.loadVotes();
     }
 
-    @Test(expected = ElectionException.class)
-    public void missingVoteToken_InvalidVoteLineExceptionTest() throws NumbersException, IOException, ElectionException {
-        PrefElection test = new PrefElection("loadVot4");
-        test.loadDefs();
-        test.loadVotes();
-    }
-
     @Test
-    public void testLoadVotesMorgulValeThirtyVotes() {
+    public void LoadVotesMorgulValeThirtyVotes_test() {
         VoteCollection vc = (VoteCollection) elecE.getVoteCollection();
         assertTrue((vc.getFormalCount()==30)&&(vc.getInformalCount()==0));
     }
@@ -185,7 +182,7 @@ public class PrefElectionTests {
      * Test method for {@link asgn1Election.PrefElection#findWinner()
      */
     @Test
-    public void findWinner_MinMorgulValeTest() {
+    public void findWinner_MinMorgulVale_Test() {
         String statement = elecA.findWinner();
         String expected_statement = "Results for election: MinMorgulVale\n" +
                 "Enrolment: 25\n" +
@@ -225,7 +222,7 @@ public class PrefElectionTests {
     }
 
     @Test
-    public void findWinner_MinMorgulValeTieTest() {
+    public void findWinner_MinMorgulValeTie_Test() {
         String statement = elecB.findWinner();
         String expected_statement = "Results for election: MinMorgulValeTie\n" +
                 "Enrolment: 25\n" +
@@ -276,7 +273,7 @@ public class PrefElectionTests {
     }
 
     @Test
-    public void findWinner_MorgulValeTest() {
+    public void findWinner_MorgulVale_Test() {
         String statement = elecC.findWinner();
         String expected_statement = "Results for election: MorgulVale\n" +
                 "Enrolment: 83483\n" +
@@ -347,7 +344,7 @@ public class PrefElectionTests {
     }
 
     @Test
-    public void findWinner_AbsoluteMajorityTest() {
+    public void findWinner_AbsoluteMajority_Test() {
         String statement = elecD.findWinner();
         String expected_statement = "Results for election: AbsoluteMajority\n" +
                 "Enrolment: 10\n" +
@@ -372,6 +369,57 @@ public class PrefElectionTests {
                 "\n" +
                 "Candidate VapeNation (Vapenayshun) is the winner with 13 votes...\n";
         assertEquals(statement, expected_statement);
+    }
+
+    @Test
+    public void findWinner_noVotes_test() {
+        String statement = elecF.findWinner();
+        String expected = "Results for election: NoVotes\n" +
+                "Enrolment: 25\n" +
+                "\n" +
+                "Shelob              Monster Spider Party          (MSP)\n" +
+                "Gorbag              Filthy Orc Party              (FOP)\n" +
+                "Shagrat             Stinking Orc Party            (SOP)\n" +
+                "\n" +
+                "\n" +
+                "Counting primary votes; 3 alternatives available\n" +
+                "\n" +
+                "Preferential election: NoVotes\n" +
+                "\n" +
+                "Shelob (MSP)                 0\n" +
+                "Gorbag (FOP)                 0\n" +
+                "Shagrat (SOP)                0\n" +
+                "\n" +
+                "Informal                     1\n" +
+                "\n" +
+                "Votes Cast                   1\n" +
+                "\n" +
+                "\n" +
+                "Preferences required: distributing Shelob: 0 votes\n" +
+                "\n" +
+                "Preferential election: NoVotes\n" +
+                "\n" +
+                "Gorbag (FOP)                 0\n" +
+                "Shagrat (SOP)                0\n" +
+                "\n" +
+                "Informal                     1\n" +
+                "\n" +
+                "Votes Cast                   1\n" +
+                "\n" +
+                "\n" +
+                "Preferences required: distributing Gorbag: 0 votes\n" +
+                "\n" +
+                "Preferential election: NoVotes\n" +
+                "\n" +
+                "Shagrat (SOP)                0\n" +
+                "\n" +
+                "Informal                     1\n" +
+                "\n" +
+                "Votes Cast                   1\n" +
+                "\n" +
+                "\n" +
+                "Candidate Shagrat (Stinking Orc Party) is the winner with 0 votes...\n";
+        assertEquals(statement, expected);
     }
 
     /**

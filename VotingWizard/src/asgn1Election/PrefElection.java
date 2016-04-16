@@ -111,6 +111,10 @@ public class PrefElection extends Election {
 		CandidateIndex elim;
 		Candidate winner = null;
 
+        if(cds.size() < 2) {
+            return cds.firstEntry().getValue();
+        }
+
 		// check for absolute majority
 		for (Map.Entry<CandidateIndex, Candidate> entry : cds.entrySet()) {
 			if (entry.getValue().getVoteCount() > winVotes) {
