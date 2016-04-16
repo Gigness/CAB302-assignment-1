@@ -103,7 +103,8 @@ public class SimpleElection extends Election {
 			currentCandidate = entry.getValue();
 			votes = entry.getValue().getVoteCount();
 
-			if(highestVotes == 0) {
+			// Have not set a winner yet, meaning this is the first candidate being checked
+			if(winner == null) {
 				winner = currentCandidate;
 				highestVotes = votes;
 			}

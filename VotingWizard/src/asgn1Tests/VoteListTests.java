@@ -4,15 +4,16 @@ import asgn1Election.CandidateIndex;
 import asgn1Election.Vote;
 import asgn1Election.VoteList;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
 import java.util.Iterator;
-
 import static org.junit.Assert.*;
 
 /**
- * Created by Gigness on 29/03/2016.
+ *
+ * Junit test class for VoteLists
+ * @author Paul Foo
+ * @version 1.0
+ *
  */
 public class VoteListTests {
 

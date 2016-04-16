@@ -3,21 +3,22 @@ package asgn1Tests;
 import asgn1Election.CandidateIndex;
 import org.junit.Before;
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 /**
- * Created by Gigness on 28/03/2016.
+ *
+ * Junit test class for CandidateIndex
+ * @author Paul Foo
+ * @version 1.0
+ *
  */
 public class CandidateIndexTests {
 
-    /** setup variables */
     private CandidateIndex index1;
     private CandidateIndex index2;
     private CandidateIndex index3;
     private CandidateIndex index4;
 
-    /** setup */
     @Before
     public void setUp() {
         index1 = new CandidateIndex(1);
@@ -27,39 +28,43 @@ public class CandidateIndexTests {
     }
 
     /**
-     * inRange Test
+     * Test method for {@link asgn1Election.CandidateIndex#inRange(int)}
      */
     @Test
-    public void inRangeTrueTest() {
+    public void inRangeTrue_test() {
         for(int i = 1; i <= 15; i++) {
             assertTrue(CandidateIndex.inRange(i));
         }
     }
 
     @Test
-    public void inRangeFalse() {
+    public void inRangeFalse_test() {
         assertFalse(CandidateIndex.inRange(0));
         assertFalse(CandidateIndex.inRange(16));
     }
 
-    /** compareTo Tests */
+    /**
+     * Test method for {@link asgn1Election.CandidateIndex#compareTo(CandidateIndex)}
+     */
     @Test
-    public void compareToEqual() {
+    public void compareToEqual_test() {
         assertEquals(index3.compareTo(index4), 0);
     }
 
     @Test
-    public void compareToLessThan() {
+    public void compareToLessThan_test() {
         assertEquals(index1.compareTo(index2), -1);
     }
 
     @Test
-    public void compareToGreaterThan() {
+    public void compareToGreaterThan_test() {
         assertEquals(index3.compareTo(index1), 1);
     }
 
-    /** copy Tests */
-    @Test public void deepCopyTest() {
+    /**
+     * Test method for {@link asgn1Election.CandidateIndex#copy()}
+     */
+    @Test public void deepCopyTest_test() {
         CandidateIndex indexCopy = index1.copy();
         assertEquals(index1.compareTo(indexCopy), 0);
         index1.setValue(10);
@@ -67,18 +72,14 @@ public class CandidateIndexTests {
         assertEquals(index1.toString(), "10");
     }
 
-    /** incrementIndex Tests */
+    /**
+     * Test method for {@link asgn1Election.CandidateIndex#incrementIndex()}
+     */
     @Test
-    public void incrementIndexTest() {
+    public void incrementIndex_test() {
         CandidateIndex temp = new CandidateIndex(4);
-        CandidateIndex temp1 = new CandidateIndex(11);
-        index1.incrementIndex();
-        index1.incrementIndex();
-        index3.incrementIndex();
-        index3.incrementIndex();
-        index3.incrementIndex();
-        index1.incrementIndex();
-        assertEquals(temp.compareTo(index1), 0);
-        assertEquals(temp1.compareTo(index3), 0);
+        temp.incrementIndex();
+        temp.incrementIndex();
+        assertEquals(temp.toString(), "6");
     }
 }

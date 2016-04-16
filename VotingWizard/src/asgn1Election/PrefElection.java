@@ -21,6 +21,9 @@ import asgn1Util.Strings;
  */
 public class PrefElection extends Election {
 
+	/** variable used to store the entire results output */
+	private String result;
+
 	/**
 	 * Simple Constructor for <code>PrefElection</code>, takes name and also sets the
 	 * election type internally.
@@ -32,39 +35,24 @@ public class PrefElection extends Election {
 		this.type = PrefVoting;
 	}
 
-	private String result;
-
 	/*
 	 * (non-Javadoc)
 	 *
 	 * @see asgn1Election.Election#findWinner()
 	 */
-//	@Override
-//	public String findWinner() {
-//		int numWinVotes;
-//		double halfFormalVotes;
-//		Candidate winner;
-//
-//		System.out.print(showResultHeader());
-//		halfFormalVotes = vc.getFormalCount() * 0.5;
-//		numWinVotes = (int) Math.floor(halfFormalVotes);
-//		winner = clearWinner(numWinVotes);
-//		return reportWinner(winner);
-//	}
-
 	@Override
 	public String findWinner() {
 		int numWinVotes;
-		double halfFormalVotes;
+		double percentageNeeded;
 		Candidate winner = null;
-		this.result = showResultHeader();
+		result = showResultHeader();
 
 		vc.countPrimaryVotes(cds);
 		result += (reportPrimaryVote());
 		result += (reportCountStatus());
 
-		halfFormalVotes = vc.getFormalCount() * 0.5;
-		numWinVotes = (int) Math.floor(halfFormalVotes);
+		percentageNeeded = vc.getFormalCount() * 0.5;
+		numWinVotes = (int) Math.floor(percentageNeeded);
 
 		while(winner == null) {
 			winner = clearWinner(numWinVotes);
@@ -110,11 +98,15 @@ public class PrefElection extends Election {
 
 	// Protected and Private/helper methods below///
 
-
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see asgn1Election.Election#clearWinner(int)
+	 */
 	@Override
 	protected Candidate clearWinner(int winVotes) {
 
-		CandidateIndex elim = null;
+		CandidateIndex elim;
 		Candidate winner = null;
 
 		// check for absolute majority
@@ -133,12 +125,6 @@ public class PrefElection extends Election {
 
 		return winner;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see asgn1Election.Election#clearWinner(int)
-	 */
 //	@Override
 //	protected Candidate clearWinner(int winVotes) {
 //		boolean absoluteMajorityWin = false;
@@ -255,10 +241,5 @@ public class PrefElection extends Election {
 	private String reportPrimaryVote() {
 		String str = "Counting primary votes; " + cds.size() + " alternatives available\n";
 		return str;
-	}
-
-	//TODO test method
-	public void print_invertedVotes() {
-		vc.printVoteCollectionInvert();
 	}
 }

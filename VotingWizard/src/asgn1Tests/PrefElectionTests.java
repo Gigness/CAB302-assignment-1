@@ -1,17 +1,20 @@
-package asgn1Tests;
+/**
+ * Contains junit tests for asgn1Election.PrefElection
+ */
 
+package asgn1Tests;
 import asgn1Election.*;
 import asgn1Util.NumbersException;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
 import static org.junit.Assert.*;
 
 /**
- * Created by Gigness on 31/03/2016.
+ * Class contains the the junit tests for PrefElection
+ * @author Paul Foo
+ * @version 1.0
  */
 public class PrefElectionTests {
 
@@ -22,9 +25,6 @@ public class PrefElectionTests {
     private ExtendedElection elecE;
     private int numCandidates = 3;
 
-    /**
-     * setUp
-     */
     @Before
     public void setUp() throws Exception {
         elecA = new PrefElection("MinMorgulVale");
@@ -48,7 +48,9 @@ public class PrefElectionTests {
         elecE.loadVotes();
     }
 
-    /** loadDefs */
+    /**
+     * Test method for {@link PrefElection#loadDefs()}
+     */
     @Test(expected = ElectionException.class)
     public void notEnoughCandidates_ElectionExceptionTest() throws NumbersException, IOException, ElectionException {
         PrefElection test = new PrefElection("loadDefs");
@@ -116,7 +118,7 @@ public class PrefElectionTests {
     }
 
     @Test
-    public void loadDefs_MinMorgulVale() throws ElectionException {
+    public void loadDefs_MinMorgulValeTest() throws ElectionException {
         java.util.Collection<Candidate> candidates = elecA.getCandidates();
         ArrayList<Candidate> expectedCandidates= new ArrayList<>();
         int counter = 0;
@@ -129,14 +131,15 @@ public class PrefElectionTests {
         expectedCandidates.add(gorbag);
         expectedCandidates.add(shagrat);
 
-
         for(Candidate c: candidates) {
             assertEquals(c.toString(), expectedCandidates.get(counter).toString());
             counter++;
         }
     }
 
-    /** loadVotes */
+    /**
+     * Test method for {@link asgn1Election.PrefElection#loadVotes()}
+     */
     @Test(expected = NumbersException.class)
     public void voteContainsLetter_NumbersExceptionTest() throws NumbersException, IOException, ElectionException {
         PrefElection test = new PrefElection("loadVot");
@@ -171,7 +174,9 @@ public class PrefElectionTests {
         assertTrue((vc.getFormalCount()==30)&&(vc.getInformalCount()==0));
     }
 
-    /** findWinner */
+    /**
+     * Test method for {@link asgn1Election.PrefElection#findWinner()
+     */
     @Test
     public void findWinner_MinMorgulValeTest() {
         String statement = elecA.findWinner();
@@ -263,12 +268,6 @@ public class PrefElectionTests {
         assertEquals(statement, expected_statement);
     }
 
-    /** getCandidates Test */
-    @Test
-    public void getCandidates_Test() {
-
-    }
-
     @Test
     public void findWinner_MorgulValeTest() {
         String statement = elecC.findWinner();
@@ -343,14 +342,36 @@ public class PrefElectionTests {
     @Test
     public void findWinner_AbsoluteMajorityTest() {
         String statement = elecD.findWinner();
-//        String expected_statement = "\nCandidate VapeNation (Vapenayshun)" +
-//                " is the winner with 13 votes...\n";
-//        assertEquals(statement, expected_statement);
+        String expected_statement = "Results for election: AbsoluteMajority\n" +
+                "Enrolment: 10\n" +
+                "\n" +
+                "VapeNation          Vapenayshun                   (VPN)\n" +
+                "SwagKings           SwagKings                     (SWG)\n" +
+                "YoloSwag            YoloSwag Party                (YOL)\n" +
+                "\n" +
+                "\n" +
+                "Counting primary votes; 3 alternatives available\n" +
+                "\n" +
+                "Preferential election: AbsoluteMajority\n" +
+                "\n" +
+                "VapeNation (VPN)            13\n" +
+                "SwagKings (SWG)             10\n" +
+                "YoloSwag (YOL)               1\n" +
+                "\n" +
+                "Informal                     0\n" +
+                "\n" +
+                "Votes Cast                  24\n" +
+                "\n" +
+                "\n" +
+                "Candidate VapeNation (Vapenayshun) is the winner with 13 votes...\n";
+        assertEquals(statement, expected_statement);
     }
 
-    /** isFormal tests */
+    /**
+     * Test method for {@link asgn1Election.PrefElection#isFormal(Vote v)}
+     */
     @Test
-    public void isFormalTest() throws Exception {
+    public void isFormal_Test() throws Exception {
         Vote v = new VoteList(numCandidates);
         v.addPref(1);
         v.addPref(2);
@@ -359,7 +380,7 @@ public class PrefElectionTests {
     }
 
     @Test
-    public void isFormalMissingCandidateTest() {
+    public void isFormalMissingCandidate_Test() {
         Vote v = new VoteList(numCandidates);
         v.addPref(1);
         v.addPref(2);
@@ -367,7 +388,7 @@ public class PrefElectionTests {
     }
 
     @Test
-    public void isFormal_OutOfRangeTest() {
+    public void isFormal_OutOfRange_Test() {
         Vote v = new VoteList(numCandidates);
         v.addPref(1);
         v.addPref(2);
@@ -376,7 +397,7 @@ public class PrefElectionTests {
     }
 
     @Test
-    public void isFormal_DupeTest() {
+    public void isFormal_Duplicate_Test() {
         Vote v = new VoteList(numCandidates);
         v.addPref(1);
         v.addPref(2);
@@ -384,16 +405,11 @@ public class PrefElectionTests {
         assertFalse(elecA.isFormal(v));
     }
     @Test
-    public void isFormalDupeTest1() {
+    public void isFormal_DuplicateFirstPref_Test() {
         Vote v = new VoteList(numCandidates);
         v.addPref(1);
         v.addPref(1);
         v.addPref(2);
         assertFalse(elecA.isFormal(v));
-    }
-
-    @Test
-    public void test1() {
-        elecA.print_invertedVotes();
     }
 }

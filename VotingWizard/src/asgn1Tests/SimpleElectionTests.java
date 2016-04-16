@@ -4,27 +4,26 @@ import asgn1Election.*;
 import asgn1Util.NumbersException;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.io.IOException;
-
 import static org.junit.Assert.*;
 
 /**
- * Created by Gigness on 30/03/2016.
+ *
+ * Junit test class for SimpleElection
+ * @author Paul Foo
+ * @version 1.0
+ *
  */
 public class SimpleElectionTests {
 
-    /** setup variables */
     private SimpleElection elecA;
     private SimpleElection elecB;
     private SimpleElection elecC;
     private SimpleElection elecD;
     private SimpleElection elecE;
-    private SimpleElection elecTie;
-    private SimpleElection elecTie1;
+    private SimpleElection elecF;
     private int numCandidates = 5;
 
-    /** setup */
     @Before
     public void setUp() throws Exception {
         elecA = new SimpleElection("MinMorgulValeSimple");
@@ -43,29 +42,20 @@ public class SimpleElectionTests {
         elecB.loadDefs();
         elecB.loadVotes();
 
-        elecC = new SimpleElection("SimpleElec_easy_majority");
+        elecC = new SimpleElection("SimpleElec_majority");
         elecC.loadDefs();
         elecC.loadVotes();
 
-        elecTie = new SimpleElection("TestTie");
-        elecTie.loadDefs();
-        elecTie.loadVotes();
-
-        elecTie1 = new SimpleElection("TestTie1");
-        elecTie1.loadDefs();
-        elecTie1.loadVotes();
+        elecF = new SimpleElection("NoVotes");
+        elecF.loadDefs();
+        elecF.loadVotes();
     }
 
-    /** constructor Test */
-    @Test(expected = IOException.class)
-    public void setUpFileNotFound() throws NumbersException, IOException, ElectionException {
-        SimpleElection elecC = new SimpleElection("Swag");
-        elecC.loadDefs();
-    }
-
-    /** isFormal Tests */
+    /**
+     * Test method for {@link asgn1Election.SimpleElection#isFormal(Vote)}
+     */
     @Test
-    public void isFormalValidTest1() throws Exception {
+    public void isFormalValid_test() throws Exception {
         Vote v = new VoteList(numCandidates);
         v.addPref(1);
         v.addPref(2);
@@ -76,7 +66,7 @@ public class SimpleElectionTests {
     }
 
     @Test
-    public void isFormalValidTest2() throws Exception {
+    public void isFormalValid_duplicates_test() throws Exception {
         Vote v = new VoteList(numCandidates);
         v.addPref(1);
         v.addPref(3);
@@ -87,7 +77,7 @@ public class SimpleElectionTests {
     }
 
     @Test
-    public void isFormalInvalid_tooManyFirstPrefsTest() throws Exception {
+    public void isFormalInvalid_duplicateFirstPrefs_test() throws Exception {
         Vote v = new VoteList(numCandidates);
         v.addPref(1);
         v.addPref(1);
@@ -107,7 +97,7 @@ public class SimpleElectionTests {
     }
 
     @Test
-    public void isFormalInvalid_candOutOfRangeTest() {
+    public void isFormalInvalid_candidateIndexOutOfRange_test() {
         Vote v = new VoteList(numCandidates);
         v.addPref(1);
         v.addPref(2);
@@ -118,15 +108,18 @@ public class SimpleElectionTests {
     }
 
     @Test
-    public void isFormalInvalid_notEnoughCandidatesTest() {
+    public void isFormalInvalid_notEnoughCandidates_test() {
         Vote v1 = new VoteList (numCandidates);
         v1.addPref(1);
         v1.addPref(5);
         assertFalse(elecB.isFormal(v1));
     }
 
+    /**
+     * Test method for {@link asgn1Election.SimpleElection#findWinner()}
+     */
     @Test
-    public void findWinner_minMorgulValeSimpleTest() {
+    public void findWinner_minMorgulValeSimple_test() {
         String statement = elecA.findWinner();
         String expected = "Results for election: MinMorgulValeSimple\n" +
                 "Enrolment: 25\n" +
@@ -154,7 +147,7 @@ public class SimpleElectionTests {
     }
 
     @Test
-    public void findWinner_minMorgulaValeTieSimpleTest() {
+    public void findWinner_minMorgulaValeTieSimple_test() {
         String statement = elecD.findWinner();
         String expected = "Results for election: MinMorgulValeTieSimple\n" +
                 "Enrolment: 25\n" +
@@ -183,7 +176,7 @@ public class SimpleElectionTests {
     }
 
     @Test
-    public void findWinner_MorgulValeSimpleTest() {
+    public void findWinner_MorgulValeSimple_test() {
         String statement = elecE.findWinner();
         String expected = "Results for election: MorgulValeSimple\n" +
                 "Enrolment: 83483\n" +
@@ -215,36 +208,93 @@ public class SimpleElectionTests {
     }
 
 
-//    @Test
-//    public void findWinner_majority_win_test() {
-//        String statement = elecC.findWinner();
-//        String actual_statement = "\nCandidate YoloSwag" +
-//                " (YoloSwag Party) is the winner with 6 votes...\n";
-//        assertEquals(statement, actual_statement);
-//    }
-//
-//    @Test
-//    public void findWinner_Test() {
-//        String statement = elecB.findWinner();
-//        String actual_statement = "\nCandidate VapeNation" +
-//                " (Vapenayshun) is the winner with 5 votes...\n";
-//        assertEquals(statement, actual_statement);
-//    }
-//
-//
-//    @Test
-//    public void findWinner_Tie() throws Exception {
-//        String statement = elecTie.findWinner();
-//        String actual_statement = "\nCandidate VapeNation" +
-//                " (Vapenayshun) is the winner with 2 votes...\n";
-//        assertEquals(statement, actual_statement);
-//    }
-//
-//    @Test
-//    public void findWinner_Tie1() {
-//        String statement = elecTie1.findWinner();
-//        String actual_statement = "\nCandidate SwagKings" +
-//                " (SwagKings) is the winner with 3 votes...\n";
-//        assertEquals(statement, actual_statement);
-//    }
+    @Test
+    public void findWinner_clearMajorityWin_test() {
+        String statement = elecC.findWinner();
+        String actual_statement = "Results for election: SimpleElec_majority\n" +
+                "Enrolment: 10\n" +
+                "\n" +
+                "VapeNation          Vapenayshun                   (VPN)\n" +
+                "SwagKings           SwagKings                     (SWG)\n" +
+                "YoloSwag            YoloSwag Party                (YOL)\n" +
+                "\n" +
+                "\n" +
+                "Counting primary votes; 3 alternatives available\n" +
+                "\n" +
+                "Simple election: SimpleElec_majority\n" +
+                "\n" +
+                "VapeNation (VPN)             3\n" +
+                "SwagKings (SWG)              4\n" +
+                "YoloSwag (YOL)               6\n" +
+                "\n" +
+                "Informal                     4\n" +
+                "\n" +
+                "Votes Cast                  17\n" +
+                "\n" +
+                "\n" +
+                "Candidate YoloSwag (YoloSwag Party) is the winner with 6 votes...\n";
+        assertEquals(statement, actual_statement);
+    }
+
+    @Test
+    public void findWinner_Tie_test() {
+        String statement = elecB.findWinner();
+        String actual_statement =
+                "Results for election: SimpleElec_Tie\n" +
+                "Enrolment: 20\n" +
+                "\n" +
+                "VapeNation          Vapenayshun                   (VPN)\n" +
+                "SwagKings           SwagKings                     (SWG)\n" +
+                "YoloSwag            YoloSwag Party                (YOL)\n" +
+                "abc                 abc Party                     (ABC)\n" +
+                "bleh                bleh Party                    (BLH)\n" +
+                "\n" +
+                "\n" +
+                "Counting primary votes; 5 alternatives available\n" +
+                "\n" +
+                "Simple election: SimpleElec_Tie\n" +
+                "\n" +
+                "VapeNation (VPN)             5\n" +
+                "SwagKings (SWG)              5\n" +
+                "YoloSwag (YOL)               2\n" +
+                "abc (ABC)                    5\n" +
+                "bleh (BLH)                   3\n" +
+                "\n" +
+                "Informal                     0\n" +
+                "\n" +
+                "Votes Cast                  20\n" +
+                "\n" +
+                "\n" +
+                "Candidate VapeNation (Vapenayshun) is the winner with 5 votes...\n";
+        assertEquals(statement, actual_statement);
+    }
+
+    @Test
+    public void NoVotes_tie_test() {
+        String statement = elecF.findWinner();
+        String expected =
+                "Results for election: NoVotes\n" +
+                "Enrolment: 25\n" +
+                "\n" +
+                "Shelob              Monster Spider Party          (MSP)\n" +
+                "Gorbag              Filthy Orc Party              (FOP)\n" +
+                "Shagrat             Stinking Orc Party            (SOP)\n" +
+                "\n" +
+                "\n" +
+                "Counting primary votes; 3 alternatives available\n" +
+                "\n" +
+                "Simple election: NoVotes\n" +
+                "\n" +
+                "Shelob (MSP)                 0\n" +
+                "Gorbag (FOP)                 0\n" +
+                "Shagrat (SOP)                0\n" +
+                "\n" +
+                "Informal                     1\n" +
+                "\n" +
+                "Votes Cast                   1\n" +
+                "\n" +
+                "\n" +
+                "Candidate Shelob (Monster Spider Party) is the winner with 0 votes...\n";
+        assertEquals(statement, expected);
+    }
 }

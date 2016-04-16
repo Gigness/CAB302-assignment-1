@@ -9,7 +9,11 @@ import java.util.TreeMap;
 import static org.junit.Assert.*;
 
 /**
- * Created by Gigness on 29/03/2016.
+ *
+ * Junit test class for VoteCollection
+ * @author Paul Foo
+ * @version 1.0
+ *
  */
 public class VoteCollectionTests {
 
@@ -34,9 +38,25 @@ public class VoteCollectionTests {
     private CandidateIndex candIndex4;
     private CandidateIndex candIndex5;
 
-    /** setup **/
     @Before
     public void setUp() throws ElectionException {
+        /* set up dummy votes of the following format:
+
+        1 2 3 4 5
+        1 2 3 4 5
+        1 2 3 4 5
+        2 1 5 3 4
+        2 1 5 3 4
+        2 1 5 3 4
+        3 5 1 2 4
+        3 5 1 2 4
+        3 5 1 2 4
+        4 3 5 1 2
+        4 3 5 1 2
+        5 3 2 4 1
+
+        */
+
         a = new VoteCollection(numCandidates);
         cds = new TreeMap<>();
 
@@ -105,30 +125,19 @@ public class VoteCollectionTests {
                 a.includeFormalVote(vote);
             }
         }
-
-        /* Votes
-        1 2 3 4 5
-        1 2 3 4 5
-        1 2 3 4 5
-        2 1 5 3 4
-        2 1 5 3 4
-        2 1 5 3 4
-        3 5 1 2 4
-        3 5 1 2 4
-        3 5 1 2 4
-        4 3 5 1 2
-        4 3 5 1 2
-        5 3 2 4 1
-         */
     }
 
-    /** constructor Test */
-    @Test (expected = ElectionException.class)
-    public void constructorBadParameter() throws ElectionException {
+    /**
+     * Test method for {@link asgn1Election.VoteCollection#VoteCollection(int)}
+     */
+    @Test(expected = ElectionException.class)
+    public void negativeParam_VoteCollection_test() throws ElectionException {
         VoteCollection b = new VoteCollection(-1);
     }
 
-    /** countPrimaryVotes Test*/
+    /**
+     * Test method for {@link asgn1Election.VoteCollection#countPrimaryVotes(TreeMap)}
+     */
     @Test
     public void countPrimaryVotesTest() {
         a.countPrimaryVotes(cds);
@@ -140,24 +149,30 @@ public class VoteCollectionTests {
         assertEquals(cds.get(candIndex5).getVoteCount(), 1);
     }
 
-    /** countPrefVotes Tests */
+    /**
+     * Test method for {@link asgn1Election.VoteCollection#countPrefVotes(TreeMap, CandidateIndex)}
+     */
     @Test
     public void countPrefVotesTestRound1() {
+        // count primary votes
         a.countPrimaryVotes(cds);
+
+        // eliminate the candidate with lowest votes
         cds.remove(candIndex5);
+
         a.countPrefVotes(cds, candIndex5);
         assertEquals(cds.get(candIndex1).getVoteCount(), 3);
         assertEquals(cds.get(candIndex2).getVoteCount(), 3);
         assertEquals(cds.get(candIndex3).getVoteCount(), 4);
         assertEquals(cds.get(candIndex4).getVoteCount(), 2);
-
     }
 
     @Test
     public void countPrefVotesTestRound2() {
+        // continue from previous test, to simulate round 2 of a preference distribution
         countPrefVotesTestRound1();
 
-        // eliminate candidateIndex1
+        // eliminate candidateIndex4 which has the lowest votes
         cds.remove(candIndex4);
         a.countPrefVotes(cds, candIndex4);
         assertEquals(cds.get(candIndex1).getVoteCount(), 3);
@@ -167,6 +182,7 @@ public class VoteCollectionTests {
 
     @Test
     public void countPrefVotesTestRound3() {
+        // continue from previous test, to simulate round 3 of a preference distribution
         countPrefVotesTestRound2();
 
         cds.remove(candIndex1);
@@ -177,51 +193,72 @@ public class VoteCollectionTests {
 
     @Test
     public void countPrefVotesTestRound4() {
+        // continue from previous test, to simulate round 4 of a preference distribution
         countPrefVotesTestRound3();
+
         cds.remove(candIndex3);
         a.countPrefVotes(cds, candIndex3);
         assertEquals(cds.get(candIndex2).getVoteCount(), 12);
     }
 
+
+    /**
+     * Test for method {@link asgn1Election.VoteCollection#emptyTheCollection()}
+     */
     @Test
-    public void emptyCollectionTest() {
+    public void emptyCollection_test() {
         a.emptyTheCollection();
         assertEquals(a.getInformalCount(), 0);
         assertEquals(a.getFormalCount(), 0);
     }
 
-    /** includeFormalVote Tests */
+    @Test
+    public void emptyCollection_VoteListEmpty_test() {
+        // The votes have been loaded during the setup
+        // initiating emptyTheCollection followed by a primary count will no votes incremented on each candidate
+        a.emptyTheCollection();
+        a.countPrimaryVotes(cds);
+        assertEquals(cds.get(candIndex1).getVoteCount(), 0);
+        assertEquals(cds.get(candIndex2).getVoteCount(), 0);
+        assertEquals(cds.get(candIndex3).getVoteCount(), 0);
+        assertEquals(cds.get(candIndex4).getVoteCount(), 0);
+        assertEquals(cds.get(candIndex5).getVoteCount(), 0);
+    }
+
+
+    /**
+     * Test for method {@link asgn1Election.VoteCollection#includeFormalVote(Vote)}
+     */
     @Test
     public void includeFormalVoteTest() {
         Vote dummyVote = new VoteList(numCandidates);
         dummyVote.addPref(1);
         a.includeFormalVote(dummyVote);
 
-        // Originally cand1 has 3 votes, should have 4 after dummy Vote
+        // Originally cand1 has 3 votes, will have 4 after dummy Vote proving includeFormalVote correct
         a.countPrimaryVotes(cds);
         assertEquals(cds.get(candIndex1).getVoteCount(), 4);
     }
 
-    /** getFormalCount Tests */
+    /**
+     * Test for method {@link asgn1Election.VoteCollection#getFormalCount()}
+     */
     @Test
     public void getFormalCount() {
         assertEquals(a.getFormalCount(), numFormalVotes);
     }
 
     @Test
-    public void getFormalCountIncrement() {
+    public void getFormalCountIncrement_test() {
         Vote vote = new VoteList(numCandidates);
         vote.addPref(1);
-        vote.addPref(2);
-        vote.addPref(3);
-        vote.addPref(4);
-        vote.addPref(5);
         a.includeFormalVote(vote);
-
         assertEquals(a.getFormalCount(), numFormalVotes + 1);
     }
 
-    /** updateInformalCount Tests */
+    /**
+     * Test for method {@link asgn1Election.VoteCollection#updateInformalCount()}
+     */
     @Test
     public void updateInformalCountTest() {
         assertEquals(a.getInformalCount(), 0);
