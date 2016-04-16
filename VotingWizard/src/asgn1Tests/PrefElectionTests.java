@@ -50,16 +50,35 @@ public class PrefElectionTests {
         test.loadDefs();
     }
 
+    public void noCandidates_ExceptionTest() {
+
+    }
+
     @Test(expected = ElectionException.class)
     public void incorrectHeader_ExceptionTest() throws NumbersException, IOException, ElectionException {
         PrefElection test = new PrefElection("loadDefs1");
         test.loadDefs();
     }
 
+    @Test(expected = NumbersException.class)
+    public void enrolementNumberNotaNumber_ExceptionTest() throws NumbersException, IOException, ElectionException {
+        PrefElection test = new PrefElection("loadDefs2");
+        test.loadDefs();
+    }
+
+    @Test(expected = NumbersException.class)
+    public void voteContainsLetter_NumbersExceptionLoadVotesTest() throws NumbersException, IOException, ElectionException {
+        PrefElection test = new PrefElection("loadVot");
+        test.loadDefs();
+        test.loadVotes();
+    }
+
     @Test
     public void loadDefs_ElectionSettingsPrefElectionTest() {
         assertEquals(elecA.getType(), 1);
     }
+
+
 
     @Test
     public void loadDefs_MinMorgulVale() throws ElectionException {
@@ -99,7 +118,6 @@ public class PrefElectionTests {
     @Test
     public void findWinner_MinMorgulValeTest() {
         String statement = elecA.findWinner();
-        System.out.print(statement);
         String expected_statement = "Results for election: MinMorgulVale\n" +
                 "Enrolment: 25\n" +
                 "\n" +
@@ -140,7 +158,6 @@ public class PrefElectionTests {
     @Test
     public void findWinner_MinMorgulValeTieTest() {
         String statement = elecB.findWinner();
-        System.out.println(statement);
         String expected_statement = "Results for election: MinMorgulValeTie\n" +
                 "Enrolment: 25\n" +
                 "\n" +
@@ -192,7 +209,6 @@ public class PrefElectionTests {
     @Test
     public void findWinner_MorgulValeTest() {
         String statement = elecC.findWinner();
-        System.out.println(statement);
         String expected_statement = "Results for election: MorgulVale\n" +
                 "Enrolment: 83483\n" +
                 "\n" +

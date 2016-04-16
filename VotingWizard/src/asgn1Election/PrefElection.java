@@ -60,7 +60,7 @@ public class PrefElection extends Election {
 		this.result = showResultHeader();
 
 		vc.countPrimaryVotes(cds);
-		result += (reportPrimaryVote()) + "\n";
+		result += (reportPrimaryVote());
 		result += (reportCountStatus());
 
 		halfFormalVotes = vc.getFormalCount() * 0.5;
@@ -251,11 +251,10 @@ public class PrefElection extends Election {
 	/**
 	 * Helper method to create string to show results of a primary voting round
 	 * @return String containing a description of the primary voting round
-     */
+	 */
 	private String reportPrimaryVote() {
-		String str = "Counting primary votes; " + cds.size() + " alternatives available";
+		String str = "Counting primary votes; " + cds.size() + " alternatives available\n";
 		return str;
-
 	}
 
 	//TODO test method

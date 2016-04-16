@@ -19,6 +19,7 @@ import asgn1Util.Strings;
  */
 public class SimpleElection extends Election {
 
+	private String results = "";
 	/**
 	 * Simple Constructor for <code>SimpleElection</code>, takes name and also sets the 
 	 * election type internally. 
@@ -37,14 +38,10 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public String findWinner() {
-
+		results += showResultHeader();
 		Candidate winner = clearWinner(0);
-		String results =  reportWinner(winner);
+		results +=  reportWinner(winner);
 		return results;
-	}
-
-	public void testSimpleElection() {
-		vc.countPrimaryVotes(cds);
 	}
 
 	/* 
@@ -96,6 +93,8 @@ public class SimpleElection extends Election {
 		Candidate winner = null;
 
 		vc.countPrimaryVotes(cds);
+		results += reportPrimaryVote();
+		results += reportCountResult();
 
 		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
 
@@ -139,6 +138,15 @@ public class SimpleElection extends Election {
 		length = ElectionManager.DisplayFieldWidth - cast.length()
 				- voteStr.length();
 		str += cast + Strings.createPadding(' ', length) + voteStr + "\n\n";
+		return str;
+	}
+
+	/**
+	 * Helper method to create string to show results of a primary voting round
+	 * @return String containing a description of the primary voting round
+	 */
+	private String reportPrimaryVote() {
+		String str = "Counting primary votes; " + cds.size() + " alternatives available\n";
 		return str;
 	}
 }
