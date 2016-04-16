@@ -36,7 +36,7 @@ public class VoteList implements Vote {
 	 */
 	public VoteList(int numCandidates) {
 		this.numCandidates = numCandidates;
-		vote = new ArrayList<>();
+		this.vote = new ArrayList<>();
 	}
 
 	/*
@@ -46,7 +46,7 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public boolean addPref(int index) {
-		if((currentCandidate < numCandidates) && (CandidateIndex.inRange(index))) {
+		if((this.currentCandidate < this.numCandidates) && (CandidateIndex.inRange(index))) {
 			vote.add(index);
 			currentCandidate++;
 			return true;
@@ -63,7 +63,7 @@ public class VoteList implements Vote {
 	@Override
 	public Vote copyVote() {
 		Vote copyVote = new VoteList(numCandidates);
-		for(int pref: vote) {
+		for(int pref: this.vote) {
 			copyVote.addPref(pref);
 		}
 		return copyVote;
@@ -76,8 +76,11 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public CandidateIndex getPreference(int pref) {
-		// Because of 0 index and candidateIndexes must be > 0
+		// Because of 0-index arrays and candidateIndexes must be > 0
 		int preferredCand = (vote.indexOf(pref) + 1);
+        if(preferredCand == 0) {
+            return null;
+        }
 		CandidateIndex candIndex = new CandidateIndex(preferredCand);
 		return candIndex;
 	}
@@ -89,9 +92,10 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Vote invertVote() {
-		Vote invertedVote = new VoteList(numCandidates);
-		for(int i = 1; i <= numCandidates; i++) {
-			int candidate = vote.indexOf(i) + 1; // Because zero indexed arrays, and candidate Indexes are 1 based
+		Vote invertedVote = new VoteList(this.numCandidates);
+		for(int i = 1; i <= this.numCandidates; i++) {
+			// Because zero indexed arrays, and candidate Indexes are 1 based
+			int candidate = this.vote.indexOf(i) + 1;
 			invertedVote.addPref(candidate);
 		}
 		return invertedVote;
@@ -104,7 +108,7 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Iterator<Integer> iterator() {
-		return vote.iterator();
+		return this.vote.iterator();
 	}
 
 	/*

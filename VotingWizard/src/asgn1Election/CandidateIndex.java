@@ -72,7 +72,7 @@ public class CandidateIndex implements Comparable<CandidateIndex> {
 	 * Simple method to increment the <code>CandidateIndex</code>
 	 */
 	public void incrementIndex() {
-		++this.value;
+		this.value++;
 	}
 
 	/**

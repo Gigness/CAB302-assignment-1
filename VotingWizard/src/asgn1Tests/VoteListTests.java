@@ -17,14 +17,12 @@ import static org.junit.Assert.*;
  */
 public class VoteListTests {
 
-    /** setup Variables */
     private VoteList a;
     private VoteList b;
     private int candidateNum = 7;
 
-    /** setup */
     @Before
-    public void voteListConstuctTest() {
+    public void setUp() {
         a = new VoteList(candidateNum);
         b = new VoteList(candidateNum + 1);
 
@@ -33,52 +31,53 @@ public class VoteListTests {
         }
     }
 
-    /** addPref tests */
+    /**
+     * Test method for {@link asgn1Election.VoteList#addPref(int)}
+     */
     @Test
-    public void addPrefOneTest() {
+    public void addPrefOne_test() {
         assertTrue(b.addPref(7));
         assertEquals(b.toString(), "7 ");
     }
 
     @Test
-    public void addPrefFullTest() {
+    public void addPrefFull_test() {
         assertEquals(a.toString(), "1 2 3 4 5 6 7 ");
     }
 
     @Test
-    public void addPrefOverFillTest() {
+    public void addPrefOverFill_test() {
         assertFalse(a.addPref(8));
         assertEquals(a.toString(), "1 2 3 4 5 6 7 ");
-        for(int i = 1; i <= candidateNum + 1; i++) {
-            assertTrue(b.addPref(i));
-        }
-        assertEquals(b.toString(), "1 2 3 4 5 6 7 8 ");
     }
 
     @Test
-    public void addPrefDuplicates() {
+    public void addPrefDuplicates_test() {
         for(int i = 0; i < candidateNum + 1; i++) {
             assertTrue(b.addPref(8));
         }
-        assertFalse(b.addPref(90));
         assertEquals(b.toString(), "8 8 8 8 8 8 8 8 ");
     }
 
     @Test
-    public void addPrefoutOfRangeCandidateTest() {
+    public void addPrefoutOfRangeCandidate_test() {
         assertFalse(b.addPref(16));
         assertFalse(b.addPref(0));
+        assertFalse(b.addPref(-1));
+        assertFalse(b.addPref(20));
     }
 
-    /** copy Test */
+    /**
+     * Test method for {@link asgn1Election.VoteList#copyVote()}
+     */
     @Test
-    public void copyVoteTest() {
+    public void copyVote_test() {
         Vote copyA = a.copyVote();
         assertEquals(a.toString(), copyA.toString());
     }
 
     @Test
-    public void deepCopyVoteTest() {
+    public void deepCopyVote_test() {
         b.addPref(1);
         Vote copyB = b.copyVote();
 
@@ -93,9 +92,11 @@ public class VoteListTests {
     }
 
 
-    /** getPref Tests */
+    /**
+     * Test method for {@link asgn1Election.VoteList#getPreference(int)}
+     */
     @Test
-    public void preferredCandidateAvailableTest() {
+    public void getPreference_test() {
         CandidateIndex firstPref = a.getPreference(1);
         assertEquals(firstPref.toString(), "1");
         CandidateIndex lastPref = a.getPreference(candidateNum);
@@ -103,7 +104,7 @@ public class VoteListTests {
     }
 
     @Test
-    public void preferredCandidateMixedVoteTest() {
+    public void getPreference_MixedVote_test() {
         // b = 8 1 3 5 6 3 2 7
         b.addPref(8);
         b.addPref(1);
@@ -120,19 +121,20 @@ public class VoteListTests {
         assertEquals(fourthPref.toString(), "6");
     }
 
-    // TODO is this okay?
-    // Returns a CandidateIndex of 0 if preference is not found
+
     @Test
-    public void preferredCandidateUnavailableTest() {
+    public void getPreference_DoesNotExist_test() {
         CandidateIndex badPref = a.getPreference(candidateNum + 1);
         CandidateIndex badPref1 = a.getPreference(100);
-        assertEquals(badPref.toString(), "0");
-        assertEquals(badPref1.toString(), "0");
+        assertNull(badPref);
+        assertNull(badPref1);
     }
 
-    /** invertVote Tests */
+    /**
+     * Test method for {@link asgn1Election.VoteList#invertVote()}
+     */
     @Test
-    public void invertVoteTest() {
+    public void invertVote_test() {
         b.addPref(2);
         b.addPref(6);
         b.addPref(5);
@@ -146,7 +148,7 @@ public class VoteListTests {
     }
 
     @Test
-    public void invertVoteTest2() {
+    public void invertVote_test2() {
         b.addPref(3);
         b.addPref(2);
         b.addPref(4);
@@ -159,9 +161,11 @@ public class VoteListTests {
         assertEquals(invertedVotesB.toString(), "7 2 1 3 4 5 6 8 ");
     }
 
-    /** iterator Tests */
+    /**
+     * Test method for {@link asgn1Election.VoteList#iterator()}
+     */
     @Test
-    public void iteratorTest() {
+    public void iterator_test() {
         Iterator<Integer> aIterator = a.iterator();
         int pref = 1;
         while(aIterator.hasNext()) {
@@ -172,12 +176,14 @@ public class VoteListTests {
     }
 
     @Test
-    public void iteratorNotNullTest() {
+    public void iteratorNotNull_test() {
         Iterator<Integer> aIterator = a.iterator();
         assertNotNull(aIterator);
     }
 
-    /** toString Tests */
+    /**
+     * Test method for {@link asgn1Election.VoteList#toString()}
+     */
     @Test
     public void toStringTest() {
         assertEquals(a.toString(), "1 2 3 4 5 6 7 ");

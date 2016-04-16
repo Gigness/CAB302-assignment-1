@@ -168,6 +168,13 @@ public class PrefElectionTests {
         test.loadVotes();
     }
 
+    @Test(expected = ElectionException.class)
+    public void missingVoteToken_InvalidVoteLineExceptionTest() throws NumbersException, IOException, ElectionException {
+        PrefElection test = new PrefElection("loadVot4");
+        test.loadDefs();
+        test.loadVotes();
+    }
+
     @Test
     public void testLoadVotesMorgulValeThirtyVotes() {
         VoteCollection vc = (VoteCollection) elecE.getVoteCollection();

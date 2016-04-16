@@ -19,7 +19,9 @@ import asgn1Util.Strings;
  */
 public class SimpleElection extends Election {
 
+	/** result variable which holds the entire output */
 	private String results = "";
+
 	/**
 	 * Simple Constructor for <code>SimpleElection</code>, takes name and also sets the 
 	 * election type internally. 
@@ -52,6 +54,8 @@ public class SimpleElection extends Election {
 	public boolean isFormal(Vote v) {
 		int numPrefs = 0;
 		int numOnes = 0;
+
+        // checks number of 1 pref votes, number of votes and if a vote does not correspond to a legal candidate
 		for(int pref: v) {
 			numPrefs++;
 			if(pref == 1) {
@@ -61,6 +65,7 @@ public class SimpleElection extends Election {
 				return false;
 			}
 		}
+
 		if(numOnes != 1 || numPrefs != numCandidates) {
 			return false;
 		} else {
@@ -89,19 +94,17 @@ public class SimpleElection extends Election {
 	@Override
 	protected Candidate clearWinner(int wVotes) {
 		int highestVotes = 0;
-		Integer votes;
 		Candidate winner = null;
 
+        // perform primary count and save the results
 		vc.countPrimaryVotes(cds);
 		results += reportPrimaryVote();
 		results += reportCountResult();
 
 		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
 
-			Candidate currentCandidate;
-
-			currentCandidate = entry.getValue();
-			votes = entry.getValue().getVoteCount();
+			Candidate currentCandidate = entry.getValue();
+			int votes = entry.getValue().getVoteCount();
 
 			// Have not set a winner yet, meaning this is the first candidate being checked
 			if(winner == null) {
@@ -114,9 +117,6 @@ public class SimpleElection extends Election {
 			}
 		}
 
-		if(winner == null) {
-			System.out.println("winner is never set...");
-		}
 		return winner;
 	}
 

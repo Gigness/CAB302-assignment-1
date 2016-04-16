@@ -63,27 +63,18 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds, CandidateIndex elim) {
-		// if candidate exists in treeMap and is not the eliminated candidate
-		// if its an invalid vote -
-		// redistribute it to this candidate
-		// break we donzo
-		// else
-		// we good, don't have to do anything
-		// the vote is still current
-		// break;
 
-		// else if candidate  is an elim candidate
-		// this vote is invalid and must be redistributed
-		// set invalidVote to true
 		for(Vote vote: voteList) {
 			boolean invalidVote = false;
 			for(int candidate: vote.invertVote()) {
 				CandidateIndex ci = new CandidateIndex(candidate);
+                // vote may be distributed if the previous preference was invalid
 				if(cds.containsKey(ci) && ci.compareTo(elim) != 0) {
 					if(invalidVote) {
 						cds.get(ci).incrementVoteCount();
 					}
 					break;
+                // vote invalid if CandidateIndex matches elim, distribute it to the next Candidate
 				} else if(ci.compareTo(elim) == 0) {
 					invalidVote = true;
 				}
@@ -124,7 +115,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public int getFormalCount() {
-		return this.formalCount;
+        return this.formalCount;
 	}
 
 	/*
@@ -134,7 +125,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public int getInformalCount() {
-		return this.informalCount;
+        return this.informalCount;
 	}
 
 	
@@ -156,21 +147,9 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void updateInformalCount() {
-		informalCount++;
+        this.informalCount++;
 	}
 
-	//todo Remove
-	public void printVoteCollection() {
-		for(Vote vote: voteList) {
-			System.out.println(vote);
-		}
-	}
-
-	public void printVoteCollectionInvert() {
-		for(Vote vote: voteList) {
-			System.out.println(vote.invertVote());
-		}
-	}
 	/**
 	 * 
 	 * <p>Important helper method to find the candidate in the current vote 
@@ -191,7 +170,8 @@ public class VoteCollection implements Collection {
 	 * 
 	 */
 	private CandidateIndex getPrefthKey(Vote v,TreeMap<CandidateIndex, Candidate> cds, int pref) {
-		return null;
+		// NOT USED
+        return null;
 	}
 
 	/**
@@ -203,7 +183,7 @@ public class VoteCollection implements Collection {
 	 * @return <code>CandidateIndex</code> of the first preference candidate
 	 */
 	private CandidateIndex getPrimaryKey(Vote v) {
-		return v.getPreference(1);
+        return v.getPreference(1);
     }
 
 
