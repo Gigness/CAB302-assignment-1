@@ -24,6 +24,7 @@ public class PrefElectionTests {
     private PrefElection elecD;
     private ExtendedElection elecE;
     private PrefElection elecF;
+    private PrefElection elecG;
     private int numCandidates = 3;
 
     @Before
@@ -51,6 +52,11 @@ public class PrefElectionTests {
         elecF = new PrefElection("noVotes");
         elecF.loadDefs();
         elecF.loadVotes();
+
+        // Courtesy of Kieren Boal - CAB302 Facebook group
+        elecG = new PrefElection("LargeSimpsons");
+        elecG.loadDefs();
+        elecG.loadVotes();
     }
 
     /**
@@ -369,6 +375,112 @@ public class PrefElectionTests {
                 "\n" +
                 "Candidate VapeNation (Vapenayshun) is the winner with 13 votes...\n";
         assertEquals(statement, expected_statement);
+    }
+
+    @Test
+    public void findWinner_LargeSimpsons_test() {
+        String statement = elecG.findWinner();
+        String expected = "Results for election: LargeSimpsons\n" +
+                "Enrolment: 800\n" +
+                "\n" +
+                "Bart Simpson        No School Party               (NSP)\n" +
+                "Lisa Simpson        Smarty Pants Party            (SPP)\n" +
+                "Homer Simpson       Doughnuts For all Pary        (DFP)\n" +
+                "Marge Simpson       Blue Hair Party               (BHP)\n" +
+                "Maggie Simpson      Pacifier Lovers Party         (PLP)\n" +
+                "Montgomery Burns    Money Bags Party              (MBP)\n" +
+                "Comic Book Guy      Comics For All Party          (CFP)\n" +
+                "\n" +
+                "\n" +
+                "Counting primary votes; 7 alternatives available\n" +
+                "\n" +
+                "Preferential election: LargeSimpsons\n" +
+                "\n" +
+                "Bart Simpson (NSP)         106\n" +
+                "Lisa Simpson (SPP)         108\n" +
+                "Homer Simpson (DFP)         97\n" +
+                "Marge Simpson (BHP)        116\n" +
+                "Maggie Simpson (PLP)       112\n" +
+                "Montgomery Burns (MBP)     109\n" +
+                "Comic Book Guy (CFP)       102\n" +
+                "\n" +
+                "Informal                    50\n" +
+                "\n" +
+                "Votes Cast                 800\n" +
+                "\n" +
+                "\n" +
+                "Preferences required: distributing Homer Simpson: 97 votes\n" +
+                "\n" +
+                "Preferential election: LargeSimpsons\n" +
+                "\n" +
+                "Bart Simpson (NSP)         119\n" +
+                "Lisa Simpson (SPP)         125\n" +
+                "Marge Simpson (BHP)        130\n" +
+                "Maggie Simpson (PLP)       131\n" +
+                "Montgomery Burns (MBP)     127\n" +
+                "Comic Book Guy (CFP)       118\n" +
+                "\n" +
+                "Informal                    50\n" +
+                "\n" +
+                "Votes Cast                 800\n" +
+                "\n" +
+                "\n" +
+                "Preferences required: distributing Comic Book Guy: 118 votes\n" +
+                "\n" +
+                "Preferential election: LargeSimpsons\n" +
+                "\n" +
+                "Bart Simpson (NSP)         142\n" +
+                "Lisa Simpson (SPP)         153\n" +
+                "Marge Simpson (BHP)        157\n" +
+                "Maggie Simpson (PLP)       150\n" +
+                "Montgomery Burns (MBP)     148\n" +
+                "\n" +
+                "Informal                    50\n" +
+                "\n" +
+                "Votes Cast                 800\n" +
+                "\n" +
+                "\n" +
+                "Preferences required: distributing Bart Simpson: 142 votes\n" +
+                "\n" +
+                "Preferential election: LargeSimpsons\n" +
+                "\n" +
+                "Lisa Simpson (SPP)         193\n" +
+                "Marge Simpson (BHP)        195\n" +
+                "Maggie Simpson (PLP)       183\n" +
+                "Montgomery Burns (MBP)     179\n" +
+                "\n" +
+                "Informal                    50\n" +
+                "\n" +
+                "Votes Cast                 800\n" +
+                "\n" +
+                "\n" +
+                "Preferences required: distributing Montgomery Burns: 179 votes\n" +
+                "\n" +
+                "Preferential election: LargeSimpsons\n" +
+                "\n" +
+                "Lisa Simpson (SPP)         258\n" +
+                "Marge Simpson (BHP)        257\n" +
+                "Maggie Simpson (PLP)       235\n" +
+                "\n" +
+                "Informal                    50\n" +
+                "\n" +
+                "Votes Cast                 800\n" +
+                "\n" +
+                "\n" +
+                "Preferences required: distributing Maggie Simpson: 235 votes\n" +
+                "\n" +
+                "Preferential election: LargeSimpsons\n" +
+                "\n" +
+                "Lisa Simpson (SPP)         363\n" +
+                "Marge Simpson (BHP)        387\n" +
+                "\n" +
+                "Informal                    50\n" +
+                "\n" +
+                "Votes Cast                 800\n" +
+                "\n" +
+                "\n" +
+                "Candidate Marge Simpson (Blue Hair Party) is the winner with 387 votes...\n";
+        assertEquals(statement, expected);
     }
 
     @Test

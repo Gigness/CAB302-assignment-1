@@ -1,10 +1,8 @@
 package asgn1Tests;
 
 import asgn1Election.*;
-import asgn1Util.NumbersException;
 import org.junit.Before;
 import org.junit.Test;
-import java.io.IOException;
 import static org.junit.Assert.*;
 
 /**
@@ -22,6 +20,7 @@ public class SimpleElectionTests {
     private SimpleElection elecD;
     private SimpleElection elecE;
     private SimpleElection elecF;
+    private SimpleElection elecG;
     private int numCandidates = 5;
 
     @Before
@@ -49,6 +48,11 @@ public class SimpleElectionTests {
         elecF = new SimpleElection("NoVotes");
         elecF.loadDefs();
         elecF.loadVotes();
+
+        // Courtesy of Kieren Boal - CAB302 Facebook group
+        elecG = new SimpleElection("LargeSimpsons");
+        elecG.loadDefs();
+        elecG.loadVotes();
     }
 
     /**
@@ -95,7 +99,40 @@ public class SimpleElectionTests {
         assertFalse(elecB.isFormal(v));
         assertFalse(elecB.isFormal(v1));
     }
+    
+    @Test
+    public void isFormalInvalid_noFirstPref_test() {
+    	Vote v = new VoteList(numCandidates);
+    	v.addPref(3);
+        v.addPref(5);
+        v.addPref(4);
+        v.addPref(2);
+        v.addPref(2);
+        assertFalse(elecB.isFormal(v));
+    }
 
+    @Test
+    public void isFormalInvalid_CandidateIndexZero_test() {
+    	Vote v = new VoteList(numCandidates);
+    	v.addPref(3);
+        v.addPref(0);
+        v.addPref(4);
+        v.addPref(1);
+        v.addPref(2);
+        assertFalse(elecB.isFormal(v));
+    }
+    
+    @Test
+    public void isFormalInvalid_CandidateIndexNegative_test() {
+    	Vote v = new VoteList(numCandidates);
+    	v.addPref(3);
+        v.addPref(-1);
+        v.addPref(4);
+        v.addPref(1);
+        v.addPref(2);
+        assertFalse(elecB.isFormal(v));
+    }
+    
     @Test
     public void isFormalInvalid_candidateIndexOutOfRange_test() {
         Vote v = new VoteList(numCandidates);
@@ -267,6 +304,42 @@ public class SimpleElectionTests {
                 "\n" +
                 "Candidate VapeNation (Vapenayshun) is the winner with 5 votes...\n";
         assertEquals(statement, actual_statement);
+    }
+
+    @Test
+    public void findWinner_LargeSimpsons_test() {
+        String statement = elecG.findWinner();
+        String expected = "Results for election: LargeSimpsons\n" +
+                "Enrolment: 800\n" +
+                "\n" +
+                "Bart Simpson        No School Party               (NSP)\n" +
+                "Lisa Simpson        Smarty Pants Party            (SPP)\n" +
+                "Homer Simpson       Doughnuts For all Pary        (DFP)\n" +
+                "Marge Simpson       Blue Hair Party               (BHP)\n" +
+                "Maggie Simpson      Pacifier Lovers Party         (PLP)\n" +
+                "Montgomery Burns    Money Bags Party              (MBP)\n" +
+                "Comic Book Guy      Comics For All Party          (CFP)\n" +
+                "\n" +
+                "\n" +
+                "Counting primary votes; 7 alternatives available\n" +
+                "\n" +
+                "Simple election: LargeSimpsons\n" +
+                "\n" +
+                "Bart Simpson (NSP)         107\n" +
+                "Lisa Simpson (SPP)         110\n" +
+                "Homer Simpson (DFP)         97\n" +
+                "Marge Simpson (BHP)        121\n" +
+                "Maggie Simpson (PLP)       113\n" +
+                "Montgomery Burns (MBP)     112\n" +
+                "Comic Book Guy (CFP)       103\n" +
+                "\n" +
+                "Informal                    37\n" +
+                "\n" +
+                "Votes Cast                 800\n" +
+                "\n" +
+                "\n" +
+                "Candidate Marge Simpson (Blue Hair Party) is the winner with 121 votes...\n";
+        assertEquals(statement, expected);
     }
 
     @Test
