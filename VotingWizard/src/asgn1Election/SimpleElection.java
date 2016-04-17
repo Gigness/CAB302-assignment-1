@@ -20,7 +20,7 @@ import asgn1Util.Strings;
 public class SimpleElection extends Election {
 
 	/** result variable which holds the entire output */
-	private String results = "";
+	private String results;
 
 	/**
 	 * Simple Constructor for <code>SimpleElection</code>, takes name and also sets the 
@@ -40,7 +40,7 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public String findWinner() {
-		results += showResultHeader();
+		results = showResultHeader();
 		Candidate winner = clearWinner(0);
 		results +=  reportWinner(winner);
 		return results;
@@ -65,7 +65,6 @@ public class SimpleElection extends Election {
 				return false;
 			}
 		}
-
 		if(numOnes != 1 || numPrefs != numCandidates) {
 			return false;
 		} else {
@@ -96,11 +95,12 @@ public class SimpleElection extends Election {
 		int highestVotes = 0;
 		Candidate winner = null;
 
-        // perform primary count and save the results
+        // perform primary count and save the output to the results variable
 		vc.countPrimaryVotes(cds);
 		results += reportPrimaryVote();
 		results += reportCountResult();
 
+        // determine the winner by checking each candidate's vote count
 		for(Map.Entry<CandidateIndex, Candidate> entry: cds.entrySet()) {
 
 			Candidate currentCandidate = entry.getValue();

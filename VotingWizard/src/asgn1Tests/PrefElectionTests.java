@@ -1,8 +1,12 @@
 /**
- * Contains junit tests for asgn1Election.PrefElection
+ *
+ * This file is part of the testing suite for the VotingWizard Project
+ * for CAB302, Semester 1, 2016
+ * Junit tests for {@link asgn1Election.PrefElection}
+ *
  */
-
 package asgn1Tests;
+
 import asgn1Election.*;
 import asgn1Util.NumbersException;
 import org.junit.Before;
@@ -12,9 +16,11 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 /**
- * Class contains the the junit tests for PrefElection
+ *
+ * Testing Suite for PrefElection
  * @author Paul Foo
  * @version 1.0
+ *
  */
 public class PrefElectionTests {
 
@@ -60,75 +66,105 @@ public class PrefElectionTests {
     }
 
     /**
-     * Test method for {@link PrefElection#loadDefs()}
+     * Test method for {@link asgn1Election.PrefElection#loadDefs()}
      */
     @Test(expected = ElectionException.class)
-    public void notEnoughCandidates_ElectionExceptionTest() throws NumbersException, IOException, ElectionException {
+    public void notEnoughCandidates_ElectionException_test() throws NumbersException, IOException, ElectionException {
         PrefElection test = new PrefElection("loadDefs");
         test.loadDefs();
     }
 
     @Test(expected = ElectionException.class)
-    public void invalidCandidateLine_ElectionExceptionTest() throws NumbersException, IOException, ElectionException {
+    public void invalidCandidateLine_ElectionException_test() throws NumbersException, IOException, ElectionException {
         PrefElection test = new PrefElection("loadDefs5");
         test.loadDefs();
     }
 
     @Test(expected = ElectionException.class)
-    public void nullCandidateToken_ElectionExceptionTest() throws NumbersException, IOException, ElectionException {
+    public void invalidCandidateLinePartyMissing_ElectionException_test() throws NumbersException, IOException, ElectionException {
         PrefElection test = new PrefElection("loadDefs6");
         test.loadDefs();
     }
 
     @Test(expected = ElectionException.class)
-    public void nullSeatName_ElectionExceptionTest() throws NumbersException, IOException, ElectionException {
+    public void nullSeatNameValue_ElectionException_test() throws NumbersException, IOException, ElectionException {
         PrefElection test = new PrefElection("loadDefs7");
         test.loadDefs();
     }
 
     @Test(expected = ElectionException.class)
-    public void nullNumCandidates_ElectionExceptionTest() throws NumbersException, IOException, ElectionException {
+    public void nullSeatNameLabel_ElectionException_test() throws NumbersException, IOException, ElectionException {
+        PrefElection test = new PrefElection("loadDefs11");
+        test.loadDefs();
+    }
+
+    @Test(expected = ElectionException.class)
+    public void nullNumCandidatesValue_ElectionException_test() throws NumbersException, IOException, ElectionException {
         PrefElection test = new PrefElection("loadDefs8");
         test.loadDefs();
     }
 
     @Test(expected = ElectionException.class)
-    public void nullEnrolment_ElectionExceptionTest() throws NumbersException, IOException, ElectionException {
+    public void nullNumCandidatesLabel_ElectionException_test() throws NumbersException, IOException, ElectionException {
+        PrefElection test = new PrefElection("loadDefs12");
+        test.loadDefs();
+    }
+
+    @Test(expected = ElectionException.class)
+    public void nullEnrolmentValue_ElectionException_test() throws NumbersException, IOException, ElectionException {
         PrefElection test = new PrefElection("loadDefs9");
         test.loadDefs();
     }
 
     @Test(expected = ElectionException.class)
-    public void nullCandidates_ElectionExceptionTest() throws NumbersException, IOException, ElectionException {
+    public void nullEnrolmentLabel_ElectionException_test() throws NumbersException, IOException, ElectionException {
+        PrefElection test = new PrefElection("loadDefs13");
+        test.loadDefs();
+    }
+
+    @Test(expected = ElectionException.class)
+    public void nullCandidates_ElectionException_test() throws NumbersException, IOException, ElectionException {
         PrefElection test = new PrefElection("loadDefs4");
         test.loadDefs();
     }
 
     @Test(expected = ElectionException.class)
-    public void incorrectHeader_ElectionExceptionTest() throws NumbersException, IOException, ElectionException {
+    public void incorrectHeader_ElectionException_test() throws NumbersException, IOException, ElectionException {
         PrefElection test = new PrefElection("loadDefs1");
         test.loadDefs();
     }
 
+    @Test(expected = ElectionException.class)
+    public void nullHeader_ElectionException_test() throws NumbersException, IOException, ElectionException {
+        PrefElection test = new PrefElection("loadDefs14");
+        test.loadDefs();
+    }
+
     @Test(expected = NumbersException.class)
-    public void enrolmentNumberInvalid_NumbersExceptionTest() throws NumbersException, IOException, ElectionException {
+    public void enrolmentNumberInvalid_NumbersException_test() throws NumbersException, IOException, ElectionException {
         PrefElection test = new PrefElection("loadDefs2");
         test.loadDefs();
     }
 
     @Test(expected = NumbersException.class)
-    public void numCandidatesInvalidValue_NumbersExceptionTest() throws NumbersException, IOException, ElectionException {
+    public void numCandidatesInvalidValue_NumbersException_test() throws NumbersException, IOException, ElectionException {
         PrefElection test = new PrefElection("loadDefs3");
         test.loadDefs();
     }
 
+    @Test(expected = ElectionException.class)
+    public void loadDefs_EmptyFile_ElectionException_test() throws NumbersException, IOException, ElectionException {
+        PrefElection test = new PrefElection("loadDefs10");
+        test.loadDefs();
+    }
+
     @Test
-    public void loadDefs_ElectionSettingsPrefElectionTest() {
+    public void loadDefs_ElectionSettingsPrefElection_test() {
         assertEquals(elecA.getType(), 1);
     }
 
     @Test
-    public void loadDefs_MinMorgulValeTest() throws ElectionException {
+    public void loadDefs_MinMorgulVale_test() throws ElectionException {
         java.util.Collection<Candidate> candidates = elecA.getCandidates();
         ArrayList<Candidate> expectedCandidates= new ArrayList<>();
         int counter = 0;

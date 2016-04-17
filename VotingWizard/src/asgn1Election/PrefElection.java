@@ -47,7 +47,7 @@ public class PrefElection extends Election {
 		Candidate winner = null;
 		result = showResultHeader();
 
-		// perform primary vote count and append results to String result
+		// perform primary vote count and append results to the results variable
 		vc.countPrimaryVotes(cds);
 		result += (reportPrimaryVote());
 		result += (reportCountStatus());
@@ -73,13 +73,16 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
+		// convert the vote to a set
 		HashSet<Integer> voteSet = new HashSet<>();
 		for(int pref: v) {
 			voteSet.add(pref);
 		}
+		// check for an invalid vote using hashset
 		if(voteSet.size() != numCandidates) {
 			return false;
 		}
+        // Check that all candidates have been assigned a pref
 		for(int i = 1; i <= numCandidates; i++) {
 			if(!voteSet.contains(i)) {
 				return false;
@@ -111,11 +114,12 @@ public class PrefElection extends Election {
 		CandidateIndex elim;
 		Candidate winner = null;
 
-        if(cds.size() < 2) {
+        // If there is only one candidate, there can only be one winner
+        if(cds.size() == 1) {
             return cds.firstEntry().getValue();
         }
 
-		// check for absolute majority
+		// check for an absolute majority
 		for (Map.Entry<CandidateIndex, Candidate> entry : cds.entrySet()) {
 			if (entry.getValue().getVoteCount() > winVotes) {
 				winner = entry.getValue();

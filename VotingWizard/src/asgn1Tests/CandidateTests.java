@@ -1,3 +1,10 @@
+/**
+ *
+ * This file is part of the testing suite for the VotingWizard Project
+ * for CAB302, Semester 1, 2016
+ * Junit tests for {@link asgn1Election.Candidate}
+ *
+ */
 package asgn1Tests;
 
 import asgn1Election.Candidate;

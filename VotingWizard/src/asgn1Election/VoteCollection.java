@@ -64,8 +64,10 @@ public class VoteCollection implements Collection {
 	@Override
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds, CandidateIndex elim) {
 
+		// check every preference in each Vote in the entire voteList
 		for(Vote vote: voteList) {
 			boolean invalidVote = false;
+            // operates on the inverted version of the vote
 			for(int candidate: vote.invertVote()) {
 				CandidateIndex ci = new CandidateIndex(candidate);
                 // vote may be distributed if the previous preference was invalid
@@ -74,7 +76,7 @@ public class VoteCollection implements Collection {
 						cds.get(ci).incrementVoteCount();
 					}
 					break;
-                // vote invalid if CandidateIndex matches elim, distribute it to the next Candidate
+                // vote is invalid if CandidateIndex matches elim, distribute it to the next Candidate
 				} else if(ci.compareTo(elim) == 0) {
 					invalidVote = true;
 				}

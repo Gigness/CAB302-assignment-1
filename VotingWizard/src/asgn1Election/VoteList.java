@@ -76,7 +76,7 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public CandidateIndex getPreference(int pref) {
-		// Because of 0-index arrays and candidateIndexes must be > 0
+		// Because of 0-indexed arrays and candidateIndexes are 1-indexed, need to add 1
 		int preferredCand = (vote.indexOf(pref) + 1);
         if(preferredCand == 0) {
             return null;
